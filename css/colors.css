@@ -1,4 +1,25 @@
 :root {
+    --green: #325724;
+    --blue: #2b3363;
+    --purple: #501491;
+    --pink: #ac3a73;
     --orange: #ff4500;
+
+    /* Fondo de toda la web */
+    --background: #171717;
     
+    /* fondo de los menus */
+    --background-search: #252424;
+    --background-content: #1e1d1d;
+    --background-link-profile: #2a2a2a;
+    --background-comment-popular: #2a2929;
+    --background-tags-popular: #3b3b3b;
+
+    /* Colores de los susurros */
+    --comment-back-hot: #312626;
+    --comment-back: #201f1f;
+
+    /* Elementos pequeños de los susurros */
+    --comment-btn-fire-back: #573224;
+    --comment-gener-male: #1e45bc;
 }
