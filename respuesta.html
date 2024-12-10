@@ -31,43 +31,45 @@
     <!-- Contenedor principal -->
     <div class="container mt-3">
         <div class="row">
-            <!-- Columna izquierda (visible solo en pantallas grandes) -->
+            <!-- Columna izquierda -->
             <div class="col-lg-3 d-none d-lg-block">
-                <div class="p-3 bg-dark text-white rounded">
+                <div class="p-3 bg-sidebar rounded">
                     <h5>Hola, usuario</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-white text-decoration-none">Inicio</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Tendencias</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Mi Perfil</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Cerrar Sesión</a></li>
+                        <li><a href="#" class="nav-link">Inicio</a></li>
+                        <li><a href="#" class="nav-link">Tendencias</a></li>
+                        <li><a href="#" class="nav-link">Mi Perfil</a></li>
+                        <li><a href="#" class="nav-link">Cerrar Sesión</a></li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Contenido principal con búsqueda -->
+            <!-- Columna 2 -->
             <div class="col-lg-6">
                 <!-- Fila de búsqueda -->
                 <div class="row mb-4 align-items-center">
                     <div class="col-auto">
-                        <button class="btn btn-dark d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                        <button class="btn btn-toggle d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list text-white" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
                             </svg>
                         </button>
                     </div>
                     <div class="col ps-0">
-                        <input type="search" class="form-control rounded-pill" placeholder="Buscar...">
+                        <input type="search" class="form-control rounded-pill bg-search" placeholder="Buscar...">
                     </div>
                 </div>
 
                 <!-- Contenido principal -->
-                <h2>Contenido Principal</h2>
-                <p>Este es el contenido principal de la página.</p>
+                <div class="p-3 bg-content rounded">
+                    <h2>Contenido Principal</h2>
+                    <p>Este es el contenido principal de la página.</p>
+                </div>
             </div>
 
             <!-- Columna derecha -->
             <div class="col-lg-3">
-                <div class="p-3 bg-light rounded">
+                <div class="p-3 bg-tags rounded">
                     <h5>Etiquetas Populares</h5>
                     <ul class="list-unstyled">
                         <li>#infidelidad</li>
