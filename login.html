@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecretosX - Inicia sesion</title>
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <script src="js/bootstrap/bootstrap.bundle.min.js" defer></script>
+    <script src="js/custom.js" defer></script>
+</head>
+<body>
+    <div class="min-vh-100 d-flex align-items-center justify-content-center py-5">
+        <div class="container">
+            <div class="auth-container mx-auto bg-content rounded-3 overflow-hidden">
+                <div class="row g-0">
+                    <!-- Sección de imagen -->
+                    <div class="col-md-6 position-relative d-none d-md-block">
+                        <div class="h-100 bg-dark position-relative overflow-hidden">
+                            <div class="floating-messages">
+                                <div class="message-bubble bg-sidebar p-3 rounded-3 small" style="top: 10%; left: 10%;">
+                                    ¡No creerás lo que pasó en el último evento!
+                                </div>
+                                <div class="message-bubble bg-sidebar p-3 rounded-3 small" style="top: 30%; right: 5%;">
+                                    La verdad detrás del último rumor...
+                                </div>
+                                <div class="message-bubble bg-sidebar p-3 rounded-3 small" style="top: 50%; left: 15%;">
+                                    ¿Alguien más escuchó sobre esto?
+                                </div>
+                                <div class="message-bubble bg-sidebar p-3 rounded-3 small" style="top: 70%; right: 10%;">
+                                    Secretos que nadie se atreve a contar...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de formulario -->
+                    <div class="col-md-6">
+                        <div class="p-4">
+                            <div class="text-center mb-4">
+                                <i class="fas fa-mask fs-1 text-warning mb-2"></i>
+                                <h2 class="fw-bold">Susurros</h2>
+                                <p class="text-muted">Donde los secretos cobran vida</p>
+                            </div>
+
+                            <!-- Tabs -->
+                            <ul class="nav nav-tabs border-0 mb-4" id="authTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active bg-search rounded-top border-0" data-bs-toggle="tab" data-bs-target="#login" type="button">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Entrar
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link bg-search rounded-top border-0" data-bs-toggle="tab" data-bs-target="#register" type="button">
+                                        <i class="fas fa-user-secret me-2"></i>Crear Cuenta
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <!-- Login Form -->
+                                <div class="tab-pane fade show active" id="login">
+                                    <form>
+                                        <div class="mb-3">
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-search border-0">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                                <input type="email" class="form-control bg-search" placeholder="Tu correo secreto">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-search border-0">
+                                                    <i class="fas fa-lock"></i>
+                                                </span>
+                                                <input type="password" class="form-control bg-search" placeholder="Tu contraseña">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                                            <label class="form-check-label" for="rememberMe">Mantener sesión activa</label>
+                                        </div>
+                                        <button type="submit" class="btn w-100 btn-warning">
+                                            <i class="fas fa-door-open me-2"></i>Ingresar al mundo de los secretos
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Register Form -->
+                                <div class="tab-pane fade" id="register">
+                                    <form>
+                                        <div class="mb-3">
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-search border-0">
+                                                    <i class="fas fa-user-ninja"></i>
+                                                </span>
+                                                <input type="text" class="form-control bg-search" placeholder="Tu nombre anónimo">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-search border-0">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                                <input type="email" class="form-control bg-search" placeholder="Tu correo secreto">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-search border-0">
+                                                    <i class="fas fa-lock"></i>
+                                                </span>
+                                                <input type="password" class="form-control bg-search" placeholder="Crea una contraseña">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-search border-0">
+                                                    <i class="fas fa-lock"></i>
+                                                </span>
+                                                <input type="password" class="form-control bg-search" placeholder="Confirma tu contraseña">
+                                            </div>
+                                        </div>
+                        
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-4">
+                                                <button type="button" class="btn bg-search text-white w-100 gender-btn male" onclick="selectGender(this, 'male')">
+                                                    <i class="fas fa-mars me-2"></i>Hombre
+                                                </button>
+                                            </div>
+                                            <div class="col-4">
+                                                <button type="button" class="btn bg-search text-white w-100 gender-btn female" onclick="selectGender(this, 'female')">
+                                                    <i class="fas fa-venus me-2"></i>Mujer
+                                                </button>
+                                            </div>
+                                            <div class="col-4">
+                                                <button type="button" class="btn bg-search text-white w-100 gender-btn other" onclick="selectGender(this, 'other')">
+                                                    <i class="fas fa-genderless me-2"></i>Otro
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn w-100 btn-warning mb-3">
+                                            <i class="fas fa-mask me-2"></i>Registrate
+                                        </button>
+
+                                        <div class="text-center text-muted small">
+                                            <i class="fas fa-shield-alt me-1"></i>Tu identidad siempre estará protegida
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectGender(button, gender) {
+            document.querySelectorAll('.gender-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            button.classList.add('selected');
+            document.getElementById('genderInput').value = gender;
+        }
+    </script>
+</body>
+</html>

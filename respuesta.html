@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConfiesateX</title>
+    <title>Diseño Responsivo</title>
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/colors.css">
     <link rel="stylesheet" href="css/custom.css">
@@ -14,57 +14,32 @@
     <!-- Offcanvas Sidebar -->
     <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
         <div class="offcanvas-header">
-            <h4 class="offcanvas-title text-center" id="sidebarLabel">Hola, usuario</h4>
+            <h4 class="offcanvas-title" id="sidebarLabel">Hola, usuario</h4>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <p class="text-center">@usuario</p>
+            <p>@usuario</p>
             <ul class="nav flex-column">
-                <li><a href="#" class="nav-link">
-                    <div class="bg-tags p-2 m-2 rounded text-center">Inicio</div>
-                    </a>
-                </li>
-                <li><a href="#" class="nav-link">
-                    <div class="bg-tags p-2 m-2 rounded text-center">Tendencias</div>                            
-                    </a>
-                </li>
-                <li><a href="#" class="nav-link">
-                    <div class="bg-tags p-2 m-2 rounded text-center">Mi Perfil</div>
-                    </a>
-                </li>
-                <li><a href="#" class="nav-link">
-                    <div class="bg-tags p-2 m-2 rounded text-center">Cerrar Sesión</div>
-                    </a>
-                </li>
+                <li class="nav-item"><a href="#" class="nav-link text-light">Inicio</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-light">Tendencias</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-light">Mi Perfil</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-light">Cerrar Sesión</a></li>
             </ul>
         </div>
     </div>
 
     <!-- Contenedor principal -->
-    <div class="container vh-100 p-4">
-        <div class="row vh-100">
+    <div class="container mt-3">
+        <div class="row">
             <!-- Columna izquierda -->
             <div class="col-lg-3 d-none d-lg-block">
-                <div class="p-3 bg-sidebar rounded vh-100">
-                    <h5 class="text-center">Hola, usuario</h5>
-                    <p class="text-center">@usuario</p>
+                <div class="p-3 bg-sidebar rounded">
+                    <h5>Hola, usuario</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="nav-link">
-                            <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Inicio</div>
-                            </a>
-                        </li>
-                        <li><a href="#" class="nav-link">
-                            <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Tendencias</div>                            
-                            </a>
-                        </li>
-                        <li><a href="#" class="nav-link">
-                            <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Mi Perfil</div>
-                            </a>
-                        </li>
-                        <li><a href="#" class="nav-link">
-                            <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Cerrar Sesión</div>
-                            </a>
-                        </li>
+                        <li><a href="#" class="nav-link">Inicio</a></li>
+                        <li><a href="#" class="nav-link">Tendencias</a></li>
+                        <li><a href="#" class="nav-link">Mi Perfil</a></li>
+                        <li><a href="#" class="nav-link">Cerrar Sesión</a></li>
                     </ul>
                 </div>
             </div>
@@ -72,7 +47,7 @@
             <!-- Columna 2 -->
             <div class="col-lg-6">
                 <!-- Fila de búsqueda -->
-                <div class="row mb-4 align-items-center ">
+                <div class="row mb-4 align-items-center">
                     <div class="col-auto">
                         <button class="btn btn-toggle d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list text-white" viewBox="0 0 16 16">
@@ -81,53 +56,27 @@
                         </button>
                     </div>
                     <div class="col ps-0">
-                        <input type="search" class="form-control rounded-pill bg-search text-white" placeholder="Buscar...">
+                        <input type="search" class="form-control rounded-pill bg-search" placeholder="Buscar...">
                     </div>
                 </div>
 
                 <!-- Contenido principal -->
                 <div class="p-3 bg-content rounded">
-                    <div class="row">
-                        <div class="w-auto">
-                            <version="1.0" encoding="UTF-8"?>
-                                <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#fff">
-                                    <path d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15ZM12 15V19M12 21V19M12 19H10M12 19H14" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                        </div>
-                    </div>
-                    <p>Van a asistir al dia de las viudas?</p>
+                    <h2>Contenido Principal</h2>
+                    <p>Este es el contenido principal de la página.</p>
                 </div>
             </div>
 
             <!-- Columna derecha -->
             <div class="col-lg-3">
-                <div class="p-3 bg-sidebar rounded mt-sm-4 mt-lg-0 h-100">
-                    <h5 class="text-center mb-4">Etiquetas Populares ☝️🥸</h5>
-                    <ul class="list-unstyled d-flex flex-wrap">
-                        <li><div class="bg-tags p-1 rounded m-1">#infidelidad</div></li>
-                        <li><div class="bg-tags p-1 rounded m-1">#besos</div></li>
-                        <li><div class="bg-tags p-1 rounded m-1">#inmoral</div></li>
-                        <li><div class="bg-tags p-1 rounded m-1">#secreto</div></li>
-                        <li><div class="bg-tags p-1 rounded m-1">#fiesta</div></li>
+                <div class="p-3 bg-tags rounded">
+                    <h5>Etiquetas Populares</h5>
+                    <ul class="list-unstyled">
+                        <li>#infidelidad</li>
+                        <li>#besos</li>
+                        <li>#inmoral</li>
+                        <li>#secreto</li>
                     </ul>
-                    <h5 class="text-center mb-4">Destacados 👀</h5>
-                    <div style="background: var(--background-link-profile);" class="row  rounded p-3 m-1 mb-3">
-                        <p class="small text-center">Hace 2 horas</p>
-                        Increible descubren el rumor sobre [...]
-                        <div class="row d-flex gap-2">
-                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">🔥3123</div>
-                            <div style="background: var(--green);" class="w-auto rounded-pill mt-2">🤑83%</div>
-                        </div>
-                    </div>
-                    <div style="background: var(--background-link-profile);" class="row rounded p-3 m-1 mb-3">
-                        <p class="small text-center">Hace 6 horas</p>
-                        El escándalo mas grande de la semana: La verdad sobre [...]
-                        <div class="row d-flex gap-2">
-                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">🔥1223</div>
-                            <div style="background: var(--green);" class="w-auto rounded-pill mt-2">🤑94%</div>
-                        </div>
-                        
-                    </div>
                 </div>
             </div>
         </div>
