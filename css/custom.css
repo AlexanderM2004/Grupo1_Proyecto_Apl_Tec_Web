@@ -1,0 +1,39 @@
+body {
+    background-color: var(--background);
+    color: white;
+}
+
+.bg-sidebar {
+    background-color: var(--background-content) !important;
+}
+
+.bg-search {
+    background-color: var(--background-search) !important;
+    border-color: var(--background-search) !important;
+    color: white;
+}
+
+.bg-search::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.bg-content {
+    background-color: var(--background-content) !important;
+}
+
+.bg-tags {
+    background-color: var(--background-tags-popular) !important;
+}
+
+.btn-toggle {
+    background-color: var(--background-search) !important;
+    border-color: var(--background-search) !important;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.nav-link:hover {
+    color: white !important;
+}
