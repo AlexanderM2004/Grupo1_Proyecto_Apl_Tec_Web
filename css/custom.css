@@ -89,3 +89,49 @@ body {
     background-color: var(--purple);
     border-color: var(--purple);
 }
+.bg-content {
+    background-color: var(--background-content);
+    border: none;
+    padding: 10px;
+}
+
+textarea.whisper-box, input.tags-box {
+    background-color: var(--background-link-profile);
+    border: none;
+    padding: 15px;
+    color: white;
+    font-size: 1em;
+}
+
+textarea.whisper-box::placeholder, input.tags-box::placeholder {
+    color: white; 
+    opacity: 0.8; 
+}
+
+textarea:focus, input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-publish {
+    background-color: var(--orange);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-publish:hover {
+    background-color: var(--pink);
+}
+
+textarea.whisper-box:focus, input.tags-box:focus {
+    background-color: var(--background-link-profile);
+    color: white; 
+    outline: none; 
+    box-shadow: 0 0 5px var(--orange); 
+}
+
