@@ -4,6 +4,7 @@ desktop.ini
 .git//desktop.ini
 .git/logs//desktop.ini
 .git/refs//desktop.ini
+.git/objects/**/desktop.ini
 Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
