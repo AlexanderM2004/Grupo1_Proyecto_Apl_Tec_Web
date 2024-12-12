@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConfiesateX</title>
+    <title>SecretosX</title>
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/colors.css">
     <link rel="stylesheet" href="css/custom.css">
@@ -14,13 +14,13 @@
     <!-- Offcanvas Sidebar -->
     <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
         <div class="offcanvas-header">
-            <h4 class="offcanvas-title text-center" id="sidebarLabel">Hola, usuario</h4>
+            <h4 class="offcanvas-title mx-4" id="sidebarLabel">Hola, usuario</h4>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
             <p class="text-center">@usuario</p>
             <ul class="nav flex-column">
-                <li><a href="#" class="nav-link">
+                <li><a href="Index.html" class="nav-link">
                     <div class="bg-tags p-2 m-2 rounded text-center">Inicio</div>
                     </a>
                 </li>
@@ -32,7 +32,7 @@
                     <div class="bg-tags p-2 m-2 rounded text-center">Mi Perfil</div>
                     </a>
                 </li>
-                <li><a href="#" class="nav-link">
+                <li><a href="login.html" class="nav-link">
                     <div class="bg-tags p-2 m-2 rounded text-center">Cerrar Sesión</div>
                     </a>
                 </li>
@@ -45,11 +45,11 @@
         <div class="row minvh-100 p-4">
             <!-- Columna izquierda -->
             <div class="col-lg-3 d-none d-lg-block">
-                <div class="p-3 bg-sidebar rounded vh-100">
+                <div class="p-3 bg-sidebar rounded h-100">
                     <h5 class="text-center">Hola, usuario</h5>
                     <p class="text-center">@usuario</p>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="nav-link">
+                        <li><a href="Index.html" class="nav-link">
                             <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Inicio</div>
                             </a>
                         </li>
@@ -61,7 +61,7 @@
                             <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Mi Perfil</div>
                             </a>
                         </li>
-                        <li><a href="#" class="nav-link">
+                        <li><a href="login.html" class="nav-link">
                             <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Cerrar Sesión</div>
                             </a>
                         </li>
@@ -81,7 +81,7 @@
                         </button>
                     </div>
                     <div class="col ps-0">
-                        <input type="search" class="form-control rounded-pill bg-search text-white" placeholder="Buscar...">
+                        <input type="search" class="form-control rounded-pill bg-search text-white" placeholder="Buscar susurros...">
                     </div>
                 </div>
 
@@ -91,16 +91,94 @@
                     <input type="text" class="form-control text-white rounded mb-3 tags-box" placeholder="Escribe tus etiquetas">
                     <button class="btn btn-publish w-100">Publicar</button>
                 </div>
-                <div class="p-3 bg-content rounded">
-                    <div class="row">
-                        <div class="w-auto">
-                            <version="1.0" encoding="UTF-8"?>
-                                <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#fff">
-                                    <path d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15ZM12 15V19M12 21V19M12 19H10M12 19H14" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
+                <div class="row text-center text-white m-3">
+                    <h3>Susurros recientes</h3>
+                </div>
+
+                
+
+                <a href="respuesta.html" class="link-a">
+                    <div class="p-3 bg-content rounded mb-3">
+                        <div class="mx-2 row">
+                            <div class="col-9">
+                                <div class="row gap-2">
+                                    <div style="background: var(--comment-gener-male);" class="w-auto rounded-pill">
+                                        <version="1.0" encoding="UTF-8"?><svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000">
+                                            <path d="M14.2323 9.74707C13.1474 8.66733 11.6516 8 10 8C6.68629 8 4 10.6863 4 14C4 17.3137 6.68629 20 10 20C13.3137 20 16 17.3137 16 14C16 12.3379 15.3242 10.8337 14.2323 9.74707ZM14.2323 9.74707L20 4M20 4H16M20 4V8" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                            El
+                                    </div>
+                                    <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill">🔥Hot</div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <p class="small text-end">Hace 2 horas</p>
+                            </div>
+                        </div>
+                        <p class="m-2">Espero volver a ver a la viuda (Ericka) que me cautivo mucho ... :V</p>
+                        <div class="row d-flex mx-2">
+                            <div class="bg-tags p-1 rounded m-1 w-auto">#fiesta</div>
+                            <div class="bg-tags p-1 rounded m-1 w-auto">#recuerdo</div>
+                        </div>
+                        <div class="row d-flex gap-2 mx-2">
+                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">🔥1233</div>
+                            <div style="background: var(--orange);" class="w-auto rounded-pill mt-2">🤥344</div>
+                            <div class="w-auto mt-2">📧 56</div>
                         </div>
                     </div>
-                    <p>Van a asistir al dia de las viudas?</p>
+                </a>
+
+                <div class="p-3 bg-content rounded mb-3">
+                    <div class="mx-2 row">
+                        <div class="col-9">
+                            <div class="row gap-2">
+                                <div style="background: var(--pink);" class="w-auto rounded-pill">
+                                    <?xml version="1.0" encoding="UTF-8"?><svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000">
+                                        <path d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15ZM12 15V19M12 21V19M12 19H10M12 19H14" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                       Ella
+                                </div>
+                                <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill">🔥Hot</div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <p class="small text-end">Hace 3 horas</p>
+                        </div>
+                    </div>
+                    <p class="m-2">iNo van a creer 10 que pasó en la fiesta de anoche! EI drama comenzó cuando...</p>
+                    <div class="row d-flex mx-2">
+                        <div class="bg-tags p-1 rounded m-1 w-auto">#fiesta</div>
+                    </div>
+                    <div class="row d-flex gap-2 mx-2">
+                        <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">🔥323</div>
+                        <div style="background: var(--orange);" class="w-auto rounded-pill mt-2">🤥34</div>
+                        <div class="w-auto mt-2">📧 24</div>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-content rounded mb-3">
+                    <div class="mx-2 row">
+                        <div class="col-9">
+                            <div class="row gap-2">
+                                <div style="background: var(--purple);" class="w-auto rounded-pill">
+                                    <version="1.0" encoding="UTF-8"?><svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000">
+                                        <path d="M5 20V19C5 15.134 8.13401 12 12 12V12C15.866 12 19 15.134 19 19V20" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                    Otro
+                                </div>
+                                <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill">🔥Hot</div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <p class="small text-end">Hace 2 horas</p>
+                        </div>
+                    </div>
+                    <p class="m-2">¿Alguien más vio al profesor de matemáticas en el centro comercial haciendo...?</p>
+                    <div class="row d-flex mx-2">
+                        <div class="bg-tags p-1 rounded m-1 w-auto">#recuerdo</div>
+                    </div>
+                    <div class="row d-flex gap-2 mx-2">
+                        <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">🔥133</div>
+                        <div style="background: var(--orange);" class="w-auto rounded-pill mt-2">🤥44</div>
+                        <div class="w-auto mt-2">📧 6</div>
+                    </div>
                 </div>
             </div>
 

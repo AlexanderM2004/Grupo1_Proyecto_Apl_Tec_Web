@@ -135,3 +135,7 @@ textarea.whisper-box:focus, input.tags-box:focus {
     box-shadow: 0 0 5px var(--orange); 
 }
 
+.link-a{
+    text-decoration: none;
+    color: white;
+}
