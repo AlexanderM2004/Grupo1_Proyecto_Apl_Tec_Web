@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         message.textContent = text;
         
         // Posición horizontal aleatoria (entre 10% y 60% para evitar desbordamiento)
-        const randomX = Math.random() * 40 + 10;
+        const randomX = Math.random() * 30 + 10;
         message.style.left = `${randomX}%`;
         
         // Aseguramos que empiecen desde abajo

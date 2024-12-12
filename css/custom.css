@@ -105,17 +105,17 @@ body {
 }
 
 .gender-btn.male.selected {
-    background-color: var(--comment-gener-male);
+    background-color: var(--comment-gener-male) !important;
     border-color: var(--comment-gener-male);
 }
 
 .gender-btn.female.selected {
-    background-color: var(--pink);
+    background-color: var(--pink) !important;
     border-color: var(--pink);
 }
 
 .gender-btn.other.selected {
-    background-color: var(--purple);
+    background-color: var(--purple) !important;
     border-color: var(--purple);
 }
 .bg-content {
