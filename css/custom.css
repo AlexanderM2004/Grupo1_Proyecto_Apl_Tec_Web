@@ -1,9 +1,6 @@
+/* Reset y estilos base */
 * {
     box-sizing: border-box;
-}
-
-.minvh-100 {
-    min-height: 100vh;
 }
 
 body {
@@ -11,6 +8,11 @@ body {
     color: white;
 }
 
+.minvh-100 {
+    min-height: 100vh;
+}
+
+/* Clases de fondo */
 .bg-sidebar {
     background-color: var(--background-content) !important;
 }
@@ -33,6 +35,7 @@ body {
     background-color: var(--background-tags-popular) !important;
 }
 
+/* Componentes de navegación */
 .btn-toggle {
     background-color: var(--background-search) !important;
     border-color: var(--background-search) !important;
@@ -46,30 +49,56 @@ body {
     color: white !important;
 }
 
+/* Contenedor de autenticación */
 .auth-container {
     max-width: 1000px;
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
 
+/* Sistema de mensajes flotantes */
 .floating-messages {
-    position: absolute;
+    position: relative;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 .message-bubble {
     position: absolute;
-    opacity: 0.8;
-    animation: float 15s linear infinite;
+    opacity: 0;
+    bottom: -50px; /* Empezamos desde abajo del contenedor */
+    transform: translateY(0); /* Reseteamos el transform inicial */
+    animation: floatUp 8s linear infinite; /* Aumentamos la duración a 12s */
+    min-width: 200px;
+    max-width: 80%;
 }
 
-@keyframes float {
-    0% { transform: translateY(100%); opacity: 0; }
-    10% { opacity: 0.8; }
-    90% { opacity: 0.8; }
-    100% { transform: translateY(-100%); opacity: 0; }
+/* Retrasos de animación para los mensajes */
+.message-bubble:nth-child(1) { animation-delay: 0s; }
+.message-bubble:nth-child(2) { animation-delay: 1s; }
+.message-bubble:nth-child(3) { animation-delay: 2s; }
+.message-bubble:nth-child(4) { animation-delay: 3s; }
+
+@keyframes floatUp {
+    0% {
+        opacity: 0;
+        transform: translateY(0);
+    }
+    5% {
+        opacity: 0.8;
+        transform: translateY(0);
+    }
+    80% {
+        opacity: 0.8;
+        transform: translateY(-400px); /* Ajustamos la distancia total del movimiento */
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-500px);
+    }
 }
 
+/* Botones de género */
 .gender-btn.selected {
     border-width: 2px;
     border-style: solid;
