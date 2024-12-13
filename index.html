@@ -215,5 +215,17 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('server_info.php')
+                .then(response => response.json())
+                .then(data => {
+                    alert('Servidor: ' + data.hostname + '\nIP: ' + data.ip);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+        </script>
 </body>
 </html>
