@@ -23,14 +23,20 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/api
 
-# Copy composer files
-COPY ./api/composer.* ./
+# Create necessary directories
+RUN mkdir -p /var/www/api/storage/logs \
+    && mkdir -p /var/www/api/storage/framework/cache \
+    && mkdir -p /var/www/api/storage/framework/sessions \
+    && mkdir -p /var/www/api/storage/framework/views
 
 # Set environment variables for Composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_HOME /var/www/.composer
 
-# Install dependencies with specific settings
+# Copy composer files first
+COPY ./api/composer.* ./
+
+# Install dependencies
 RUN composer install \
     --no-interaction \
     --no-plugins \
@@ -38,20 +44,20 @@ RUN composer install \
     --prefer-dist \
     --no-autoloader
 
-# Copy application files
+# Copy existing application directory
 COPY ./api .
-
-# Generate optimized autoloader
-RUN composer dump-autoload --optimize --classmap-authoritative
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/api \
     && chmod -R 755 /var/www/api \
     && chmod -R 775 /var/www/api/storage
 
+# Generate autoloader
+RUN composer dump-autoload --optimize --classmap-authoritative
+
 # Configure error reporting
 RUN echo "error_reporting = E_ALL" > /usr/local/etc/php/conf.d/error-reporting.ini \
-    && echo "display_errors = On" >> /usr/local/etc/php/conf.d/error-reporting.ini \
+    && echo "display_errors = Off" >> /usr/local/etc/php/conf.d/error-reporting.ini \
     && echo "log_errors = On" >> /usr/local/etc/php/conf.d/error-reporting.ini \
     && echo "error_log = /var/www/api/storage/logs/php-error.log" >> /usr/local/etc/php/conf.d/error-reporting.ini
 

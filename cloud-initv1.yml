@@ -28,14 +28,18 @@ runcmd:
   # Instalar Docker Compose
   - curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   - chmod +x /usr/local/bin/docker-compose
-  - ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
   # Crear directorio para la aplicación
   - mkdir -p /app
-  - chown -R azureuser:azureuser /app
-
+  
   # Clonar el repositorio
-  - sudo -u azureuser git clone https://github.com/AlexanderM2004/Grupo1_Proyecto_Apl_Tec_Web.git /app
+  - git clone https://github.com/AlexanderM2004/Grupo1_Proyecto_Apl_Tec_Web.git /app
+  
+  # Crear estructura de directorios
+  - mkdir -p /app/api/storage/logs
+  - mkdir -p /app/api/storage/framework/cache
+  - mkdir -p /app/api/storage/framework/sessions
+  - mkdir -p /app/api/storage/framework/views
 
   # Crear el archivo .env en /app/api
   - |
@@ -54,17 +58,21 @@ runcmd:
     EOF
 
   # Configurar permisos
-  - chown -R www-data:www-data /app
   - chmod -R 755 /app
-  - chmod 600 /app/api/.env
+  - chmod -R 775 /app/api/storage
+  - chmod 640 /app/api/.env
+  - chown -R root:root /app
+  - chgrp -R www-data /app/api/storage
+  
+  # Agregar usuarios al grupo docker
+  - usermod -aG docker root
+  - for user in $(ls /home); do usermod -aG docker $user; done
 
   # Construir y levantar contenedores
   - cd /app
-  - docker-compose up -d --build
+  - docker-compose down --remove-orphans
+  - docker-compose up -d --build --force-recreate
 
-  # Agregar al grupo docker
-  - usermod -aG docker azureuser
-
-  # Verificar el estado de los contenedores
-  - docker ps
-  - docker-compose logs
+  # Permisos finales
+  - chmod 777 /var/run/docker.sock
+  - chmod -R g+rwx /app

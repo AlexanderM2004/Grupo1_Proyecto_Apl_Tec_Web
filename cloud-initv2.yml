@@ -1,0 +1,151 @@
+#cloud-config
+package_upgrade: true
+
+packages:
+  # Paquetes básicos
+  - apt-transport-https
+  - ca-certificates
+  - software-properties-common
+  - gnupg
+  - git
+  
+  # Nginx
+  - nginx
+  
+  # PHP y sus extensiones
+  - php8.1
+  - php8.1-fpm
+  - php8.1-cli
+  - php8.1-common
+  - php8.1-pgsql
+  - php8.1-mbstring
+  - php8.1-xml
+  - php8.1-curl
+  - php8.1-zip
+  - php8.1-gd
+  - php-pear
+  - php8.1-dev
+  
+  # Composer
+  - composer
+
+  # PostgreSQL client
+  - postgresql-client
+
+write_files:
+  - path: /etc/nginx/sites-available/default
+    content: |
+      server {
+          listen 80;
+          index index.php index.html;
+          error_log  /var/log/nginx/error.log debug;
+          access_log /var/log/nginx/access.log;
+          root /var/www;
+
+          # Frontend routes
+          location / {
+              try_files $uri $uri.html $uri/ /index.html;
+              index index.html;
+          }
+
+          # Remove .html extension
+          location ~ \.html$ {
+              try_files $uri =404;
+          }
+
+          # API routes
+          location /api {
+              root /var/www;
+              try_files $uri $uri/ /api/index.php$is_args$args;
+
+              location ~ \.php$ {
+                  include snippets/fastcgi-php.conf;
+                  fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+                  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                  fastcgi_param PATH_INFO $fastcgi_path_info;
+              }
+          }
+
+          # Prevent access to sensitive files
+          location ~ /\.env$ {
+              deny all;
+              return 404;
+          }
+          
+          location ~ /composer\.(json|lock)$ {
+              deny all;
+              return 404;
+          }
+      }
+
+runcmd:
+  # Actualizar el sistema
+  - apt-get update
+  - apt-get upgrade -y
+  
+  # Agregar repositorio PHP 8.1 si es necesario
+  - add-apt-repository -y ppa:ondrej/php
+  - apt-get update
+
+  # Crear directorios necesarios
+  - mkdir -p /var/www
+  - rm -rf /var/www/html # Eliminar directorio html por defecto
+
+  # Clonar repositorio
+  - git clone https://github.com/AlexanderM2004/Grupo1_Proyecto_Apl_Tec_Web.git /var/www/temp
+  - cp -r /var/www/temp/* /var/www/
+  - rm -rf /var/www/temp
+
+  # Crear directorios para storage
+  - mkdir -p /var/www/api/storage/logs
+  - mkdir -p /var/www/api/storage/framework/cache
+  - mkdir -p /var/www/api/storage/framework/sessions
+  - mkdir -p /var/www/api/storage/framework/views
+
+  # Configurar .env
+  - |
+    cat > /var/www/api/.env << 'EOF'
+    DB_HOST=${DB_HOST}
+    DB_NAME=${DB_NAME}
+    DB_USER=${DB_USER}
+    DB_PASS=${DB_PASSWORD}
+    DB_PORT=5432
+    JWT_SECRET=${JWT_SECRET}
+    JWT_EXPIRATION=3600
+    RATE_LIMIT=100
+    RATE_LIMIT_TIME=3600
+    APP_ENV=production
+    APP_DEBUG=false
+    EOF
+
+  # Instalar dependencias con Composer
+  - cd /var/www/api && composer install --no-interaction
+
+  # Configurar PHP
+  - |
+    cat >> /etc/php/8.1/fpm/php.ini << 'EOF'
+    error_reporting = E_ALL
+    display_errors = Off
+    log_errors = On
+    error_log = /var/www/api/storage/logs/php-error.log
+    memory_limit = 256M
+    upload_max_filesize = 64M
+    post_max_size = 64M
+    max_execution_time = 180
+    EOF
+
+  # Establecer permisos
+  - chown -R www-data:www-data /var/www
+  - chmod -R 755 /var/www
+  - chmod -R 775 /var/www/api/storage
+  - chmod 640 /var/www/api/.env
+
+  # Reiniciar servicios
+  - systemctl restart php8.1-fpm
+  - systemctl restart nginx
+
+  # Verificar servicios
+  - systemctl status nginx
+  - systemctl status php8.1-fpm
+  - php -v
+  - nginx -t
