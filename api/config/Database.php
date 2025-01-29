@@ -9,6 +9,7 @@ class Database {
         try {
             $this->conn = new \PDO(
                 "pgsql:host=" . $_ENV['DB_HOST'] . 
+                ";port=" . $_ENV['DB_PORT'] .
                 ";dbname=" . $_ENV['DB_NAME'],
                 $_ENV['DB_USER'],
                 $_ENV['DB_PASS']
@@ -16,7 +17,7 @@ class Database {
             $this->conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             $this->conn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
         } catch(\PDOException $e) {
-            throw new \Exception("Connection error: " . $e->getMessage());
+            throw new \Exception("Connection error");
         }
     }
 

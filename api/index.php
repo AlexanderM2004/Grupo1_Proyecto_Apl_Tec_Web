@@ -4,6 +4,7 @@ require 'vendor/autoload.php';
 use Dotenv\Dotenv;
 use App\Routes\Router;
 use App\Controllers\HomeController;
+use App\Controllers\StatusController;
 use App\Middleware\RateLimitMiddleware;
 use App\Config\JWTConfig;
 
@@ -21,8 +22,7 @@ set_exception_handler(function($e) {
     http_response_code(500);
     echo json_encode([
         'status' => 'error',
-        'message' => 'Internal Server Error',
-        'error' => $e->getMessage()
+        'message' => 'Internal Server Error'
     ]);
 });
 
@@ -41,6 +41,7 @@ $router->addMiddleware(new RateLimitMiddleware());
 
 // Define routes
 $router->get('/', [HomeController::class, 'welcome']);
+$router->get('/status', [StatusController::class, 'check']);
 
 // Handle request
 $router->resolve();
