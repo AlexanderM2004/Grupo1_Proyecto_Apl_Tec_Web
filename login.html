@@ -7,8 +7,10 @@
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/colors.css">
     <link rel="stylesheet" href="css/custom.css">
+    <script src="js/jQueryV3.7.1.js"></script>
     <script src="js/bootstrap/bootstrap.bundle.min.js" defer></script>
     <script src="js/custom.js" defer></script>
+    <script src="js/auth.js" defer></script>
     <link rel="icon" type="image/svg+xml" href="image/favicon.svg">
 </head>
 <body>
@@ -42,7 +44,7 @@
                             <div class="text-center mb-4">
                                 <i class="fas fa-mask fs-1 text-warning mb-2"></i>
                                 <h2 class="fw-bold gap-2 d-flex align-content-center justify-content-center"><img title="SecretosX" src="image/favicon.svg">SecretosX</h2>
-                                <p class="text-muted">Donde los secretos cobran vida</p>
+                                <p class="text-white">Te podras enterar de algunas cosas...</p>
                             </div>
 
                             <!-- Tabs -->
@@ -62,13 +64,13 @@
                             <div class="tab-content">
                                 <!-- Login Form -->
                                 <div class="tab-pane fade show active" id="login">
-                                    <form>
+                                    <form id="loginForm">
                                         <div class="mb-3">
                                             <div class="input-group">
                                                 <span class="input-group-text bg-search border-0">
                                                     <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#ff7300"><path d="M5 20V19C5 15.134 8.13401 12 12 12V12C15.866 12 19 15.134 19 19V20" stroke="#ff7300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="#ff7300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                                                 </span>
-                                                <input type="email" class="form-control bg-search" placeholder="Tu usuario">
+                                                <input type="text" id="loginUsername" class="form-control bg-search" placeholder="Tu usuario" required>
                                             </div>
                                         </div>
                                         <div class="mb-3">
@@ -76,7 +78,7 @@
                                                 <span class="input-group-text bg-search border-0">
                                                     <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#ff7300"><path d="M16 12H17.4C17.7314 12 18 12.2686 18 12.6V19.4C18 19.7314 17.7314 20 17.4 20H6.6C6.26863 20 6 19.7314 6 19.4V12.6C6 12.2686 6.26863 12 6.6 12H8M16 12V8C16 6.66667 15.2 4 12 4C8.8 4 8 6.66667 8 8V12M16 12H8" stroke="#ff7300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                                                 </span>
-                                                <input type="password" class="form-control bg-search" placeholder="Tu contraseña">
+                                                <input type="password" id="loginPassword" class="form-control bg-search" placeholder="Tu contraseña" required>
                                             </div>
                                         </div>
                                         <div class="mb-3 form-check">
@@ -84,20 +86,20 @@
                                             <label class="form-check-label" for="rememberMe">Mantener sesión activa</label>
                                         </div>
                                         <button type="submit" class="btn w-100 btn-warning">
-                                            <i class="fas fa-door-open me-2"></i><a class="link-a text-black" href="index.html">Inicia Sesion</a>
+                                            Iniciar Sesión
                                         </button>
                                     </form>
                                 </div>
 
                                 <!-- Register Form -->
                                 <div class="tab-pane fade" id="register">
-                                    <form>
+                                    <form id="registerForm">
                                         <div class="mb-3">
                                             <div class="input-group">
                                                 <span class="input-group-text bg-search border-0">
                                                     <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#ff7300"><path d="M5 20V19C5 15.134 8.13401 12 12 12V12C15.866 12 19 15.134 19 19V20" stroke="#ff7300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="#ff7300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                                                 </span>
-                                                <input type="text" class="form-control bg-search" placeholder="Tu nombre anónimo">
+                                                <input type="text" id="registerUsername" class="form-control bg-search" placeholder="Tu nombre anónimo" required>
                                             </div>
                                         </div>
                                         <div class="mb-3">
@@ -105,7 +107,7 @@
                                                 <span class="input-group-text bg-search border-0">
                                                     <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#ff7300"><path d="M16 12H17.4C17.7314 12 18 12.2686 18 12.6V19.4C18 19.7314 17.7314 20 17.4 20H6.6C6.26863 20 6 19.7314 6 19.4V12.6C6 12.2686 6.26863 12 6.6 12H8M16 12V8C16 6.66667 15.2 4 12 4C8.8 4 8 6.66667 8 8V12M16 12H8" stroke="#ff7300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                                                 </span>
-                                                <input type="password" class="form-control bg-search" placeholder="Crea una contraseña">
+                                                <input type="password" id="registerPassword" class="form-control bg-search" placeholder="Crea una contraseña" required>
                                             </div>
                                         </div>
                                         <div class="mb-3">
@@ -113,32 +115,33 @@
                                                 <span class="input-group-text bg-search border-0">
                                                     <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#ff7300"><path d="M16 12H17.4C17.7314 12 18 12.2686 18 12.6V19.4C18 19.7314 17.7314 20 17.4 20H6.6C6.26863 20 6 19.7314 6 19.4V12.6C6 12.2686 6.26863 12 6.6 12H8M16 12V8C16 6.66667 15.2 4 12 4C8.8 4 8 6.66667 8 8V12M16 12H8" stroke="#ff7300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                                                 </span>
-                                                <input type="password" class="form-control bg-search" placeholder="Confirma tu contraseña">
+                                                <input type="password" id="confirmPassword" class="form-control bg-search" placeholder="Confirma tu contraseña" required>
                                             </div>
                                         </div>
-                        
+                                
+                                        <input type="hidden" id="genderInput" name="gender" required>
                                         <div class="row g-2 mb-3">
                                             <div class="col-4">
-                                                <button type="button" class="btn bg-search text-white w-100 gender-btn male" onclick="selectGender(this, 'male')">
+                                                <button type="button" class="btn bg-search text-white w-100 gender-btn male" onclick="selectGender(this, 'M')">
                                                     <i class="fas fa-mars me-2"></i>Hombre
                                                 </button>
                                             </div>
                                             <div class="col-4">
-                                                <button type="button" class="btn bg-search text-white w-100 gender-btn female" onclick="selectGender(this, 'female')">
+                                                <button type="button" class="btn bg-search text-white w-100 gender-btn female" onclick="selectGender(this, 'F')">
                                                     <i class="fas fa-venus me-2"></i>Mujer
                                                 </button>
                                             </div>
                                             <div class="col-4">
-                                                <button type="button" class="btn bg-search text-white w-100 gender-btn other" onclick="selectGender(this, 'other')">
+                                                <button type="button" class="btn bg-search text-white w-100 gender-btn other" onclick="selectGender(this, 'O')">
                                                     <i class="fas fa-genderless me-2"></i>Otro
                                                 </button>
                                             </div>
                                         </div>
-
+                                
                                         <button type="submit" class="btn w-100 btn-warning mb-3">
-                                            <i class="fas fa-mask me-2"></i>Registrate
+                                            Registrarse
                                         </button>
-
+                                
                                         <div class="text-center text-muted small">
                                             <i class="fas fa-shield-alt me-1"></i>Tu identidad siempre estará protegida
                                         </div>
