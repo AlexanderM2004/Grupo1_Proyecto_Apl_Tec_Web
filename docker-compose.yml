@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  # PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: secretosx_app
+    restart: unless-stopped
+    environment:
+      - DB_HOST=db
+      - DB_NAME=susurros_db
+      - DB_USER=postgres
+      - DB_PASS=secretpassword
+      - JWT_SECRET=your_secret_key_here
+      - JWT_EXPIRATION=3600
+      - RATE_LIMIT=100
+      - RATE_LIMIT_TIME=3600
+    volumes:
+      - ./api:/var/www/api
+      - ./api/vendor:/var/www/api/vendor
+    working_dir: /var/www/api
+    networks:
+      - secretosx_network
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: secretosx_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - nginx_logs:/var/log/nginx
+    networks:
+      - secretosx_network
+    depends_on:
+      - app
+
+  # Redis for rate limiting and caching
+  redis:
+    image: redis:alpine
+    container_name: secretosx_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - secretosx_network
+
+  # PostgreSQL Service
+  db:
+    image: postgres:13
+    container_name: secretosx_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: susurros_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./api/data/:/docker-entrypoint-initdb.d/
+    ports:
+      - "5432:5432"
+    networks:
+      - secretosx_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # PgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: secretosx_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - secretosx_network
+    depends_on:
+      - db
+
+networks:
+  secretosx_network:
+    driver: bridge
+
+volumes:
+  pgdata:
+    driver: local
+  redis_data:
+    driver: local
+  nginx_logs:
+    driver: local
+  pgadmin_data:
+    driver: local
