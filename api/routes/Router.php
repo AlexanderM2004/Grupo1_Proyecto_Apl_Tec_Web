@@ -17,6 +17,10 @@ class Router {
         $this->middleware[] = $middleware;
     }
 
+    public function addRoute($path, $handler) {
+        $this->routes['POST'][$path] = $handler;
+    }
+
     public function resolve() {
         // Set JSON headers
         header('Content-Type: application/json');

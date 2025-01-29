@@ -5,6 +5,7 @@ use Dotenv\Dotenv;
 use App\Routes\Router;
 use App\Controllers\HomeController;
 use App\Controllers\StatusController;
+use App\Controllers\AuthController;
 use App\Middleware\RateLimitMiddleware;
 use App\Config\JWTConfig;
 
@@ -42,6 +43,8 @@ $router->addMiddleware(new RateLimitMiddleware());
 // Define routes
 $router->get('/', [HomeController::class, 'welcome']);
 $router->get('/status', [StatusController::class, 'check']);
+$router->addRoute('/api/register', [AuthController::class, 'register']);
+$router->addRoute('/api/login', [AuthController::class, 'login']);
 
 // Handle request
 $router->resolve();
