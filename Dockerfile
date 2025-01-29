@@ -26,7 +26,7 @@ WORKDIR /var/www/api
 # Set environment variable for Composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Copy composer files first to leverage Docker cache
+# Copy composer files first
 COPY ./api/composer.json ./api/composer.lock ./
 
 # Install dependencies
