@@ -11,7 +11,7 @@
     <script src="js/custom.js" defer></script>
     <script src="js/jQueryV3.7.1.js"></script>
     <script src="js/animate.js"></script>
-    <script src="js/auth.js" defer></script>
+    <!--<script src="js/auth.js" defer></script>-->
     <link rel="icon" type="image/svg+xml" href="image/favicon.svg">
 </head>
 <body>
@@ -94,6 +94,8 @@
                     <textarea class="form-control text-white rounded mb-3 whisper-box" rows="3" placeholder="¿Qué susurro quieres hacer conocer? 👀"></textarea>
                     <input type="text" class="form-control text-white rounded mb-3 tags-box" placeholder="Escribe tus etiquetas">
                     <button class="btn btn-publish w-100">Publicar</button>
+                    <!-- Mensaje de error para validación -->
+                    <div id="error-message" class="text-danger mt-2" style="display: none;"></div>
                 </div>
                 <div class="row text-center text-white m-3">
                     <h3>Susurros recientes</h3>
@@ -226,7 +228,41 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
+
+            // Validación de campos vacíos y etiquetas
+            const publishButton = document.querySelector('.btn-publish');
+            const whisperBox = document.querySelector('.whisper-box');
+            const tagsBox = document.querySelector('.tags-box');
+            const errorMessage = document.getElementById('error-message');
+
+            publishButton.addEventListener('click', function(event) {
+                const whisperText = whisperBox.value.trim();
+                const tagsText = tagsBox.value.trim();
+
+                // Validar que los campos no estén vacíos
+                if (whisperText === '' || tagsText === '') {
+                    errorMessage.textContent = 'Por favor, completa todos los campos.';
+                    errorMessage.style.display = 'block';
+                    event.preventDefault();
+                    return;
+                }
+
+                // Validar que las etiquetas comiencen con # y no tengan espacios
+                const tags = tagsText.split(' ');
+                const invalidTags = tags.some(tag => {
+                    return !tag.startsWith('#') || tag.length === 1 || tag.includes(' ', 1);
+                });
+
+                if (invalidTags) {
+                    errorMessage.textContent = 'Las etiquetas deben comenzar con # y tener texto después del #. Ejemplo: #FiestaLoca';
+                    errorMessage.style.display = 'block';
+                    event.preventDefault();
+                } else {
+                    errorMessage.style.display = 'none';
+                    alert('Publicación exitosa.');
+                }
+            });
         });
-        </script>
+    </script>
 </body>
 </html>
