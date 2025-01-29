@@ -94,8 +94,8 @@
                     <textarea class="form-control text-white rounded mb-3 whisper-box" rows="3" placeholder="¿Qué susurro quieres hacer conocer? 👀"></textarea>
                     <input type="text" class="form-control text-white rounded mb-3 tags-box" placeholder="Escribe tus etiquetas">
                     <button class="btn btn-publish w-100">Publicar</button>
-                    <!--Mensaje de error para validación -->
-                    <div id="error-message" class="text-danger mt-2" style="display: none;">Por favor, completa todos los campos.</div>
+                    <!-- M54: Mensaje de error para validación -->
+                    <div id="error-message" class="text-danger mt-2" style="display: none;">Por favor, completa todos los campos y asegúrate de que las etiquetas comiencen con # y no contengan espacios.</div>
                 </div>
             </div>
 
@@ -142,7 +142,7 @@
                     console.error('Error:', error);
                 });
 
-            //Validación de campos vacíos al publicar
+            //Validación de campos vacíos y etiquetas
             const publishButton = document.querySelector('.btn-publish');
             const whisperBox = document.querySelector('.whisper-box');
             const tagsBox = document.querySelector('.tags-box');
@@ -152,12 +152,25 @@
                 const whisperText = whisperBox.value.trim();
                 const tagsText = tagsBox.value.trim();
 
+                // Validar que los campos no estén vacíos
                 if (whisperText === '' || tagsText === '') {
-                    errorMessage.style.display = 'block'; //Mostrar mensaje de error
-                    event.preventDefault(); //Evita que el formulario se envíe
+                    errorMessage.textContent = 'Por favor, completa todos los campos.';
+                    errorMessage.style.display = 'block';
+                    event.preventDefault();
+                    return;
+                }
+
+                //Validar que las etiquetas comiencen con # y no contengan espacios
+                const tags = tagsText.split(' ');
+                const invalidTags = tags.some(tag => !tag.startsWith('#') || tag.includes(' '));
+
+                if (invalidTags) {
+                    errorMessage.textContent = 'Las etiquetas deben comenzar con # y no contener espacios. Ejemplo: #FiestaLoca';
+                    errorMessage.style.display = 'block';
+                    event.preventDefault();
                 } else {
-                    errorMessage.style.display = 'none'; //Ocultar mensaje de error
-                    alert('Publicación exitosa.'); //Mensaje de éxito
+                    errorMessage.style.display = 'none';
+                    alert('Publicación exitosa.');
                 }
             });
         });
