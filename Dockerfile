@@ -17,29 +17,43 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
-# Get latest Composer
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
 WORKDIR /var/www/api
 
-# Set environment variable for Composer
+# Copy composer files
+COPY ./api/composer.* ./
+
+# Set environment variables for Composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_HOME /var/www/.composer
 
-# Copy composer files first
-COPY ./api/composer.json ./api/composer.lock ./
+# Install dependencies with specific settings
+RUN composer install \
+    --no-interaction \
+    --no-plugins \
+    --no-scripts \
+    --prefer-dist \
+    --no-autoloader
 
-# Install dependencies
-RUN composer install --no-scripts --no-autoloader
-
-# Copy existing application directory
+# Copy application files
 COPY ./api .
 
-# Generate autoloader
-RUN composer dump-autoload --optimize
+# Generate optimized autoloader
+RUN composer dump-autoload --optimize --classmap-authoritative
 
-# Change ownership of our applications
-RUN chown -R www-data:www-data .
+# Set permissions
+RUN chown -R www-data:www-data /var/www/api \
+    && chmod -R 755 /var/www/api \
+    && chmod -R 775 /var/www/api/storage
+
+# Configure error reporting
+RUN echo "error_reporting = E_ALL" > /usr/local/etc/php/conf.d/error-reporting.ini \
+    && echo "display_errors = On" >> /usr/local/etc/php/conf.d/error-reporting.ini \
+    && echo "log_errors = On" >> /usr/local/etc/php/conf.d/error-reporting.ini \
+    && echo "error_log = /var/www/api/storage/logs/php-error.log" >> /usr/local/etc/php/conf.d/error-reporting.ini
 
 EXPOSE 9000
 CMD ["php-fpm"]

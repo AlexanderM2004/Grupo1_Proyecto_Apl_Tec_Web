@@ -43,8 +43,8 @@ $router->addMiddleware(new RateLimitMiddleware());
 // Define routes
 $router->get('/', [HomeController::class, 'welcome']);
 $router->get('/status', [StatusController::class, 'check']);
-$router->addRoute('/api/register', [AuthController::class, 'register']);
-$router->addRoute('/api/login', [AuthController::class, 'login']);
+$router->post('/register', [AuthController::class, 'register']);
+$router->post('/login', [AuthController::class, 'login']);
 
 // Handle request
 $router->resolve();

@@ -101,6 +101,13 @@ $(document).ready(function() {
         });
     });
 
+    // Manejar cierre de sesión
+    $('.logout-link').on('click', function(e) {
+        e.preventDefault();
+        document.cookie = 'session_data=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+        window.location.href = '/login';
+    });
+
     // Verificar autenticación al cargar la página
     checkAuth();
 });

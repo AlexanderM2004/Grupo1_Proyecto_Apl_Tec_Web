@@ -37,5 +37,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Inicializamos los mensajes
-    initializeMessages();
+    //initializeMessages();
 });
