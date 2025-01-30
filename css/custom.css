@@ -71,6 +71,7 @@ body {
     animation: floatUp 8s linear infinite; /* Aumentamos la duración a 12s */
     min-width: 200px;
     max-width: 80%;
+    height: fit-content;
 }
 
 /* Retrasos de animación para los mensajes */
@@ -240,4 +241,52 @@ textarea.whisper-box:focus, input.tags-box:focus {
     font-size: 0.875rem;
     margin-top: 0.25rem;
     display: none;
+}
+
+/* Estilos para los tabs de login */
+.nav-tabs {
+    border-bottom: none !important;
+    margin-bottom: 2rem;
+}
+
+.nav-tabs .nav-link {
+    color: white !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem;
+    margin-right: 0.5rem;
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-tabs .nav-link:hover {
+    background-color: var(--background-link-profile) !important;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: var(--background-tags-popular) !important;
+    color: var(--white) !important;
+}
+
+/* Estilos para las animaciones de los tabs */
+.tab-content > .tab-pane {
+    display: block !important;
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    transform: translateX(200px);
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.tab-content > .tab-pane.active {
+    position: relative;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+}
+
+.tab-content {
+    position: relative;
+    min-height: 400px;
 }

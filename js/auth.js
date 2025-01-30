@@ -190,7 +190,7 @@ $(document).ready(function() {
         }
         
         if (currentPath !== '/login' && currentPath !== '/login.html' && !token) {
-            window.location.href = '/login';
+            //window.location.href = '/login';
             return;
         }
     }
