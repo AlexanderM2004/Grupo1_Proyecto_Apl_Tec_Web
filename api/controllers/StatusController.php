@@ -6,6 +6,12 @@ use App\Config\JWTConfig;
 use App\Services\LoggerService;
 
 class StatusController {
+    private $logger;
+
+    public function __construct() {
+        $this->logger = LoggerService::getInstance();
+    }
+
     public function check() {
         $status = [
             'status' => 'success',
@@ -33,17 +39,12 @@ class StatusController {
     }
 
     private function checkFileSystem(): bool {
-        $testFile = __DIR__ . '/../storage/test.txt';
-        $testDir = dirname($testFile);
+        $logPath = $this->logger->getLogPath();
+        $testFile = $logPath . '/status_test.log';
 
         try {
-            // Verificar si el directorio existe o crearlo
-            if (!file_exists($testDir)) {
-                mkdir($testDir, 0755, true);
-            }
-
             // Intentar escribir
-            if (file_put_contents($testFile, 'test') === false) {
+            if (file_put_contents($testFile, 'status check: ' . date('Y-m-d H:i:s') . "\n") === false) {
                 return false;
             }
 
@@ -87,20 +88,5 @@ class StatusController {
         }
 
         return true;
-    }
-
-    public function diagnostics() {
-        return [
-            'status' => 'running',
-            'php_version' => PHP_VERSION,
-            'server_software' => $_SERVER['SERVER_SOFTWARE'],
-            'document_root' => $_SERVER['DOCUMENT_ROOT'],
-            'log_path' => LoggerService::getInstance()->getLogPath(),
-            'log_writable' => is_writable(LoggerService::getInstance()->getLogPath()),
-            'docker' => [
-                'running' => shell_exec('docker ps'),
-                'compose_version' => shell_exec('docker compose version')
-            ]
-        ];
     }
 }
