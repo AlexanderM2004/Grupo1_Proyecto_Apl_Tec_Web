@@ -168,3 +168,7 @@ textarea.whisper-box:focus, input.tags-box:focus {
     text-decoration: none;
     color: white;
 }
+
+.pointer{
+    cursor: pointer;
+}
