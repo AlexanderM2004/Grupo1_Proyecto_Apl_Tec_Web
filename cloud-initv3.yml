@@ -32,11 +32,11 @@ runcmd:
   - chmod -R 755 /var/www
 
   # Crear directorios necesarios con permisos adecuados
-  - mkdir -p /var/www/api/Storage/logs
+  - mkdir -p /var/www/api/logs
+  - chown -R www-data:www-data /var/www/api/logs
+  - chmod -R 775 /var/www/api/logs
   - mkdir -p /var/www/docker/nginx/conf.d
   - mkdir -p /var/www/docker/nginx/logs
-  - chown -R www-data:www-data /var/www/api/Storage
-  - chmod -R 775 /var/www/api/Storage
 
   # Instalar Composer globalmente en el sistema como root
   - curl -sS https://getcomposer.org/installer | php
@@ -68,10 +68,13 @@ runcmd:
 
   # Iniciar Docker Compose y construir la imagen
   - cd /var/www
-  - docker compose up -d --build
-
-  # Ejecutar Composer dentro del contenedor como root
-  - docker compose exec -u root app composer install --no-dev --optimize-autoloader
+  - docker compose build
+  - docker compose up -d
+  - sleep 10  # Dar tiempo a que los contenedores estén listos
+  - docker compose exec -T app composer install --no-dev --optimize-autoloader
 
   # Reiniciar contenedores para aplicar cambios
   - docker compose restart
+
+  - docker compose logs app > /var/log/docker-app.log
+  - docker compose logs webserver > /var/log/docker-nginx.log

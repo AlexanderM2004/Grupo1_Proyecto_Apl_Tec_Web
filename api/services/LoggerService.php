@@ -6,15 +6,28 @@ class LoggerService {
     private $logPath;
     
     private function __construct() {
-        // Asegurar que la ruta de logs esté en la raíz de /var/www/api/logs/
-        $this->logPath = realpath(__DIR__ . '/..') . '/logs/';
-
-        // Verificar si el directorio existe, si no, crearlo
+        // Usar una ruta relativa al directorio de la API
+        $this->logPath = dirname(__DIR__) . '/logs/';
+    
+        // Crear el directorio con permisos recursivos
         if (!is_dir($this->logPath)) {
-            if (!mkdir($this->logPath, 0755, true) && !is_dir($this->logPath)) {
-                throw new \RuntimeException("No se pudo crear el directorio de logs: " . $this->logPath);
+            $oldmask = umask(0);
+            if (!mkdir($this->logPath, 0775, true) && !is_dir($this->logPath)) {
+                // Si no se puede crear, usar el directorio temporal del sistema
+                $this->logPath = sys_get_temp_dir() . '/api-logs/';
+                if (!mkdir($this->logPath, 0775, true) && !is_dir($this->logPath)) {
+                    throw new \RuntimeException(sprintf(
+                        'No se pudo crear el directorio de logs en ninguna ubicación: %s o %s',
+                        dirname(__DIR__) . '/logs/',
+                        sys_get_temp_dir() . '/api-logs/'
+                    ));
+                }
             }
+            umask($oldmask);
         }
+    
+        // Asegurar permisos de escritura
+        chmod($this->logPath, 0775);
     }
     
     public static function getInstance() {

@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Config\Database;
 use App\Config\JWTConfig;
+use App\Services\LoggerService;
 
 class StatusController {
     public function check() {
@@ -86,5 +87,20 @@ class StatusController {
         }
 
         return true;
+    }
+
+    public function diagnostics() {
+        return [
+            'status' => 'running',
+            'php_version' => PHP_VERSION,
+            'server_software' => $_SERVER['SERVER_SOFTWARE'],
+            'document_root' => $_SERVER['DOCUMENT_ROOT'],
+            'log_path' => LoggerService::getInstance()->getLogPath(),
+            'log_writable' => is_writable(LoggerService::getInstance()->getLogPath()),
+            'docker' => [
+                'running' => shell_exec('docker ps'),
+                'compose_version' => shell_exec('docker compose version')
+            ]
+        ];
     }
 }
