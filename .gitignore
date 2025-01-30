@@ -21,6 +21,7 @@ storage/framework/views/**
 # Dependencies
 /api/vendor/
 /api/Logs/
+/api/logs/
 /api/node_modules/
 
 # Environment files
