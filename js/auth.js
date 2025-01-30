@@ -17,49 +17,84 @@ $(document).ready(function() {
         return null;
     }
 
-    // Función para mostrar errores
-    function showError(element, message) {
-        element.addClass('input-error');
-        const errorDiv = element.siblings('.error-message');
-        if (errorDiv.length) {
-            errorDiv.text(message).show();
-        } else {
-            $(`<div class="error-message">${message}</div>`).insertAfter(element);
+    // Funciones de validación
+    function showValidationError(element, message) {
+        // Remover error anterior si existe
+        removeValidationError(element);
+        
+        // Agregar clase de error
+        element.addClass('is-invalid');
+        
+        // Crear y agregar mensaje de error
+        const errorDiv = $('<div>')
+            .addClass('invalid-feedback')
+            .text(message);
+        
+        element.after(errorDiv);
+    }
+
+    function removeValidationError(element) {
+        element.removeClass('is-invalid');
+        element.next('.invalid-feedback').remove();
+    }
+
+    function validatePassword(password) {
+        // Al menos 6 caracteres
+        if (password.length < 6) {
+            return 'La contraseña debe tener al menos 6 caracteres';
         }
+        return '';
     }
 
-    // Función para limpiar errores
-    function clearError(element) {
-        element.removeClass('input-error');
-        element.siblings('.error-message').hide();
+    function validateUsername(username) {
+        // Al menos 3 caracteres y sin espacios
+        if (username.length < 3) {
+            return 'El usuario debe tener al menos 3 caracteres';
+        }
+        if (username.includes(' ')) {
+            return 'El usuario no puede contener espacios';
+        }
+        return '';
     }
 
-    // Función para validar formulario de login
+    // Validar formulario de login
     function validateLoginForm() {
         let isValid = true;
         const username = $('#loginUsername');
         const password = $('#loginPassword');
 
         // Limpiar errores previos
-        clearError(username);
-        clearError(password);
+        removeValidationError(username);
+        removeValidationError(password);
 
         // Validar usuario
         if (!username.val().trim()) {
-            showError(username, 'El usuario es requerido');
+            showValidationError(username, 'El usuario es requerido');
             isValid = false;
+        } else {
+            const usernameError = validateUsername(username.val().trim());
+            if (usernameError) {
+                showValidationError(username, usernameError);
+                isValid = false;
+            }
         }
 
         // Validar contraseña
-        if (!password.val().trim()) {
-            showError(password, 'La contraseña es requerida');
+        if (!password.val()) {
+            showValidationError(password, 'La contraseña es requerida');
             isValid = false;
+        } else {
+            const passwordError = validatePassword(password.val());
+            if (passwordError) {
+                showValidationError(password, passwordError);
+                isValid = false;
+            }
         }
 
         return isValid;
     }
 
-    // Función para validar formulario de registro
+    // Validar formulario de registro
     function validateRegisterForm() {
         let isValid = true;
         const username = $('#registerUsername');
@@ -68,42 +103,107 @@ $(document).ready(function() {
         const genderInput = $('#genderInput');
 
         // Limpiar errores previos
-        clearError(username);
-        clearError(password);
-        clearError(confirmPassword);
-        
+        removeValidationError(username);
+        removeValidationError(password);
+        removeValidationError(confirmPassword);
+
         // Validar usuario
         if (!username.val().trim()) {
-            showError(username, 'El usuario es requerido');
+            showValidationError(username, 'El usuario es requerido');
             isValid = false;
-        } else if (username.val().trim().length < 3) {
-            showError(username, 'El usuario debe tener al menos 3 caracteres');
-            isValid = false;
+        } else {
+            const usernameError = validateUsername(username.val().trim());
+            if (usernameError) {
+                showValidationError(username, usernameError);
+                isValid = false;
+            }
         }
 
         // Validar contraseña
         if (!password.val()) {
-            showError(password, 'La contraseña es requerida');
+            showValidationError(password, 'La contraseña es requerida');
             isValid = false;
-        } else if (password.val().length < 6) {
-            showError(password, 'La contraseña debe tener al menos 6 caracteres');
-            isValid = false;
+        } else {
+            const passwordError = validatePassword(password.val());
+            if (passwordError) {
+                showValidationError(password, passwordError);
+                isValid = false;
+            }
         }
 
         // Validar confirmación de contraseña
-        if (password.val() !== confirmPassword.val()) {
-            showError(confirmPassword, 'Las contraseñas no coinciden');
+        if (!confirmPassword.val()) {
+            showValidationError(confirmPassword, 'Debe confirmar la contraseña');
+            isValid = false;
+        } else if (password.val() !== confirmPassword.val()) {
+            showValidationError(confirmPassword, 'Las contraseñas no coinciden');
             isValid = false;
         }
 
         // Validar género
         if (!genderInput.val()) {
-            alert('Por favor selecciona un género');
+            // Mostrar error cerca de los botones de género
+            const genderButtons = $('.gender-btn').parent();
+            if (!genderButtons.next('.invalid-feedback').length) {
+                genderButtons.after($('<div>').addClass('invalid-feedback d-block').text('Debe seleccionar un género'));
+            }
             isValid = false;
+        } else {
+            // Remover mensaje de error si existe
+            $('.gender-btn').parent().next('.invalid-feedback').remove();
         }
 
         return isValid;
     }
+
+    // Validación en tiempo real para contraseñas
+    $('#registerPassword, #confirmPassword').on('input', function() {
+        const password = $('#registerPassword');
+        const confirmPassword = $('#confirmPassword');
+
+        // Solo validar si ambos campos tienen contenido
+        if (password.val() && confirmPassword.val()) {
+            if (password.val() !== confirmPassword.val()) {
+                showValidationError(confirmPassword, 'Las contraseñas no coinciden');
+            } else {
+                removeValidationError(confirmPassword);
+            }
+        }
+    });
+
+    // Manejar animación de tabs
+    $('a[data-bs-toggle="tab"]').on('show.bs.tab', function (e) {
+        const target = $($(e.target).data('bs-target'));
+        const previous = $($(e.relatedTarget).data('bs-target'));
+
+        // Limpiar todos los errores al cambiar de tab
+        $('.is-invalid').removeClass('is-invalid');
+        $('.invalid-feedback').remove();
+
+        // Animación de salida
+        previous.css({
+            'position': 'absolute',
+            'opacity': '1'
+        }).animate({
+            'opacity': '0',
+            'transform': 'translateX(-100%)'
+        }, 300, function() {
+            previous.css({
+                'position': '',
+                'transform': ''
+            });
+        });
+
+        // Animación de entrada
+        target.css({
+            'position': 'relative',
+            'opacity': '0',
+            'transform': 'translateX(100%)'
+        }).animate({
+            'opacity': '1',
+            'transform': 'translateX(0)'
+        }, 300);
+    });
 
     // Manejar login
     $('#loginForm').on('submit', function(e) {
@@ -118,7 +218,7 @@ $(document).ready(function() {
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
-                username: $('#loginUsername').val(),
+                username: $('#loginUsername').val().trim(),
                 password: $('#loginPassword').val()
             }),
             success: function(response) {
@@ -148,7 +248,7 @@ $(document).ready(function() {
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
-                username: $('#registerUsername').val(),
+                username: $('#registerUsername').val().trim(),
                 password: $('#registerPassword').val(),
                 genero: $('#genderInput').val(),
                 pais: 'Ecuador' // Valor por defecto
@@ -165,11 +265,6 @@ $(document).ready(function() {
                 alert(xhr.responseJSON?.message || 'Error en el servidor');
             }
         });
-    });
-
-    // Input events para limpiar errores mientras el usuario escribe
-    $('input').on('input', function() {
-        clearError($(this));
     });
 
     // Manejar cierre de sesión
