@@ -23,17 +23,20 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Establecer directorio de trabajo
 WORKDIR /var/www/api
 
-# Crear directorios necesarios
-RUN mkdir -p /var/www/api/storage/logs \
-    && mkdir -p /var/www/api/storage/framework/cache \
-    && mkdir -p /var/www/api/storage/framework/sessions \
-    && mkdir -p /var/www/api/storage/framework/views
+# Crear directorios necesarios con S mayúscula
+RUN mkdir -p /var/www/api/Storage/logs \
+    && mkdir -p /var/www/api/Config \
+    && mkdir -p /var/www/api/Controllers \
+    && mkdir -p /var/www/api/Models \
+    && mkdir -p /var/www/api/Services \
+    && mkdir -p /var/www/api/Routes \
+    && mkdir -p /var/www/api/Middleware \
+    && mkdir -p /var/www/api/Utils
 
 # Variables de entorno para Composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
-ENV COMPOSER_HOME /var/www/.composer
 
-# Copiar archivos composer
+# Copiar archivos de configuración
 COPY ./api/composer.* ./
 
 # Instalar dependencias
@@ -41,8 +44,7 @@ RUN composer install \
     --no-interaction \
     --no-plugins \
     --no-scripts \
-    --prefer-dist \
-    --no-autoloader
+    --prefer-dist
 
 # Copiar código de la aplicación
 COPY ./api .
@@ -50,7 +52,7 @@ COPY ./api .
 # Establecer permisos
 RUN chown -R www-data:www-data /var/www/api \
     && chmod -R 755 /var/www/api \
-    && chmod -R 775 /var/www/api/storage
+    && chmod -R 775 /var/www/api/Storage
 
 # Generar autoloader optimizado
 RUN composer dump-autoload --optimize --classmap-authoritative
@@ -59,7 +61,7 @@ RUN composer dump-autoload --optimize --classmap-authoritative
 RUN echo "error_reporting = E_ALL" > /usr/local/etc/php/conf.d/error-reporting.ini \
     && echo "display_errors = Off" >> /usr/local/etc/php/conf.d/error-reporting.ini \
     && echo "log_errors = On" >> /usr/local/etc/php/conf.d/error-reporting.ini \
-    && echo "error_log = /var/www/api/storage/logs/php-error.log" >> /usr/local/etc/php/conf.d/error-reporting.ini \
+    && echo "error_log = /var/www/api/Storage/logs/php-error.log" >> /usr/local/etc/php/conf.d/error-reporting.ini \
     && echo "memory_limit = 256M" >> /usr/local/etc/php/conf.d/error-reporting.ini \
     && echo "upload_max_filesize = 64M" >> /usr/local/etc/php/conf.d/error-reporting.ini \
     && echo "post_max_size = 64M" >> /usr/local/etc/php/conf.d/error-reporting.ini \

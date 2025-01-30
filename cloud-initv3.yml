@@ -26,16 +26,20 @@ runcmd:
   - systemctl enable docker
 
   # Crear directorio y clonar repositorio
-  - mkdir -p /app
-  - git clone https://github.com/AlexanderM2004/Grupo1_Proyecto_Apl_Tec_Web.git /app
+  - mkdir -p /var/www
+  - git clone https://github.com/AlexanderM2004/Grupo1_Proyecto_Apl_Tec_Web.git /var/www
+  - chmod -R 755 /var/www
 
-  # Crear directorios necesarios para Docker
-  - mkdir -p /app/docker/nginx/conf.d
-  - mkdir -p /app/docker/nginx/logs
+  # Crear directorios necesarios con S mayúscula
+  - mkdir -p /var/www/api/Storage/logs
+  - mkdir -p /var/www/docker/nginx/conf.d
+  - mkdir -p /var/www/docker/nginx/logs
+  - chmod -R 775 /var/www/api/Storage
+  - chown -R www-data:www-data /var/www/api/Storage
   
   # Crear .env en api/
   - |
-    cat > /app/api/.env << 'EOF'
+    cat > /var/www/api/.env << 'EOF'
     DB_HOST=asoproyecto.postgres.database.azure.com
     DB_NAME=postgres
     DB_USER=aso_g03
@@ -50,11 +54,15 @@ runcmd:
     EOF
 
   # Dar permisos
-  - chmod -R 755 /app
-  - chmod 640 /app/api/.env
+  - chmod -R 755 /var/www
+  - chmod 640 /var/www/api/.env
+  - chown -R www-data:www-data /var/www/api/Storage
+  
+  # Asegurar que el usuario pueda ejecutar Docker
+  - usermod -aG docker azureuser
 
   # Iniciar Docker Compose
-  - cd /app
+  - cd /var/www
   - docker compose up -d --build
 
   # Guardar estado
