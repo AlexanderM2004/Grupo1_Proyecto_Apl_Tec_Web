@@ -45,10 +45,10 @@ runcmd:
   # Crear el archivo .env en api/
   - |
     cat > /var/www/api/.env << 'EOF'
-    DB_HOST=asoproyecto.postgres.database.azure.com
-    DB_NAME=postgres
-    DB_USER=aso_g03
-    DB_PASS=ESPEg03.
+    DB_HOST=host
+    DB_NAME=dbname
+    DB_USER=dbuser
+    DB_PASS=dbpass
     DB_PORT=5432
     JWT_SECRET=secreto_supersecreto_123
     JWT_EXPIRATION=3600
