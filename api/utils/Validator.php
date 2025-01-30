@@ -16,4 +16,10 @@ class Validator {
         return isset($data['username']) && 
                isset($data['password']);
     }
+
+    public function validatePasswordChange(array $data): bool {
+        return isset($data['current_password']) && 
+               isset($data['new_password']) && 
+               strlen($data['new_password']) >= 6;
+    }
 }

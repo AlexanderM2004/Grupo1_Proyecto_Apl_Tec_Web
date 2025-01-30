@@ -14,6 +14,7 @@ require_once __DIR__ . '/config/Database.php';
 require_once __DIR__ . '/controllers/HomeController.php';
 require_once __DIR__ . '/controllers/StatusController.php';
 require_once __DIR__ . '/controllers/AuthController.php';
+require_once __DIR__ . '/controllers/ProfileController.php';
 
 // Middleware
 require_once __DIR__ . '/middleware/RateLimitMiddleware.php';

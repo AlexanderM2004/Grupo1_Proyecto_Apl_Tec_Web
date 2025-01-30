@@ -13,6 +13,7 @@ use App\Controllers\AuthController;
 use App\Middleware\RateLimitMiddleware;
 use App\Config\JWTConfig;
 use App\Services\LoggerService;
+use App\Controllers\ProfileController;
 
 // Configuración inicial
 error_reporting(E_ALL);
@@ -175,6 +176,7 @@ try {
     $router->get('/status', [StatusController::class, 'check']);
     $router->post('/register', [AuthController::class, 'register']);
     $router->post('/login', [AuthController::class, 'login']);
+    $router->post('/change-password', [ProfileController::class, 'changePassword']);
 
     // Log de inicio de solicitud
     $logger->info('Request started', [

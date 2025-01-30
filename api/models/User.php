@@ -34,4 +34,26 @@ class User {
         
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
+
+    public function updatePassword(int $userId, string $newPassword): bool {
+        $query = "UPDATE usuarios SET password = :password 
+                  WHERE id = :id";
+        
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute([
+            'password' => password_hash($newPassword, PASSWORD_DEFAULT),
+            'id' => $userId
+        ]);
+    }
+    
+    public function verifyPassword(int $userId, string $currentPassword): bool {
+        $query = "SELECT password FROM usuarios WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(['id' => $userId]);
+        
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$user) return false;
+        
+        return password_verify($currentPassword, $user['password']);
+    }
 }
