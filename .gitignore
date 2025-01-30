@@ -1,3 +1,22 @@
+**/logs/*
+**/storage/logs/*
+docker/nginx/logs/*
+
+# Pero mantener los directorios
+!**/logs/.gitkeep
+!**/storage/logs/.gitkeep
+!docker/nginx/logs/.gitkeep
+
+# Ignorar archivos de log específicos
+*.log
+*.error
+*.debug
+
+# Asegurarse de ignorar logs en cualquier ubicación
+storage/framework/cache/**
+storage/framework/sessions/**
+storage/framework/views/**
+
 # Dependencies
 /api/vendor/
 /api/node_modules/
