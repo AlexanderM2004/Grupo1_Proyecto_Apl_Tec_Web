@@ -1,6 +1,4 @@
-name: secretosx
 services:
-  # PHP Service
   app:
     build:
       context: .
@@ -9,15 +7,22 @@ services:
     restart: unless-stopped
     working_dir: /var/www/api
     volumes:
-      - ./:/var/www
-      - ./api/vendor:/var/www/api/vendor
-      - ./api/.env:/var/www/api/.env  # Asegurar que el .env se monte correctamente
+      - .:/var/www  # Monta todo el proyecto en el contenedor
     networks:
       - secretosx_network
-    command: >
-      sh -c "composer install --no-dev --optimize-autoloader && php-fpm"
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "Esperando a que se monte el volumen..."
+        sleep 5
+        ls -lah /var/www/api
+        if [ -f /var/www/api/composer.json ]; then
+          composer install --no-dev --optimize-autoloader
+        else
+          echo "composer.json NO ENCONTRADO en /var/www/api"
+        fi
+        php-fpm
 
-  # Nginx Service
   webserver:
     image: nginx:alpine
     container_name: secretosx_nginx
@@ -25,7 +30,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./:/var/www
+      - .:/var/www
       - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
       - ./docker/nginx/logs:/var/log/nginx
     depends_on:

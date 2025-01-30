@@ -1,4 +1,4 @@
-# Usar una imagen de PHP con extensiones necesarias
+# Usar PHP 8.1 con FPM
 FROM php:8.1-fpm
 
 # Instalar dependencias necesarias
@@ -9,23 +9,23 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     && docker-php-ext-install zip pdo pdo_mysql
 
-# Instalar Composer dentro del contenedor
+# Instalar Composer
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 
-# Establecer directorio de trabajo
+# Crear directorio de trabajo en el contenedor
 WORKDIR /var/www/api
 
 # Copiar archivos del proyecto al contenedor
-COPY . .
+COPY . /var/www/
 
-# Asegurar permisos correctos
+# Ajustar permisos de los archivos copiados
 RUN chown -R www-data:www-data /var/www/api
 
-# Ejecutar Composer install
-RUN composer install --no-dev --optimize-autoloader
+# Ejecutar Composer dentro del contenedor
+RUN if [ -f "composer.json" ]; then composer install --no-dev --optimize-autoloader; fi
 
-# Exponer el puerto para la app
+# Exponer el puerto para PHP-FPM
 EXPOSE 9000
 
 # Comando por defecto
