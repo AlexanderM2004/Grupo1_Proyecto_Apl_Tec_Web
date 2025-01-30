@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,30 +15,32 @@
     <!--<script src="js/auth.js" defer></script>-->
     <link rel="icon" type="image/svg+xml" href="image/favicon.svg">
 </head>
+
 <body>
     <!-- Offcanvas Sidebar -->
     <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
         <div class="offcanvas-header">
             <h4 class="offcanvas-title mx-4" id="sidebarLabel">Hola, usuario</h4>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
             <p class="text-center">@usuario</p>
             <ul class="nav flex-column">
                 <li><a href="Index.html" class="nav-link">
-                    <div class="bg-tags p-2 m-2 rounded text-center">Inicio</div>
+                        <div class="bg-tags p-2 m-2 rounded text-center">Inicio</div>
                     </a>
                 </li>
                 <li><a href="trend.html" class="nav-link">
-                    <div class="bg-tags p-2 m-2 rounded text-center">Tendencias</div>                            
+                        <div class="bg-tags p-2 m-2 rounded text-center">Tendencias</div>
                     </a>
                 </li>
                 <li><a href="perfil.html" class="nav-link">
-                    <div class="bg-tags p-2 m-2 rounded text-center">Mi Perfil</div>
+                        <div class="bg-tags p-2 m-2 rounded text-center">Mi Perfil</div>
                     </a>
                 </li>
                 <li><a href="login.html" class="nav-link logout-link">
-                    <div class="bg-tags p-2 m-2 rounded text-center">Cerrar Sesión</div>
+                        <div class="bg-tags p-2 m-2 rounded text-center">Cerrar Sesión</div>
                     </a>
                 </li>
             </ul>
@@ -54,19 +57,23 @@
                     <p class="text-center">@usuario</p>
                     <ul class="list-unstyled">
                         <li><a href="Index.html" class="nav-link">
-                            <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Inicio</div>
+                                <div style="background: var(--background-link-profile);"
+                                    class="p-2 m-3 rounded text-center">Inicio</div>
                             </a>
                         </li>
                         <li><a href="trend.html" class="nav-link">
-                            <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Tendencias</div>                            
+                                <div style="background: var(--background-link-profile);"
+                                    class="p-2 m-3 rounded text-center">Tendencias</div>
                             </a>
                         </li>
                         <li><a href="perfil.html" class="nav-link">
-                            <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Mi Perfil</div>
+                                <div style="background: var(--background-link-profile);"
+                                    class="p-2 m-3 rounded text-center">Mi Perfil</div>
                             </a>
                         </li>
                         <li><a href="login.html" class="nav-link">
-                            <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Cerrar Sesión</div>
+                                <div style="background: var(--background-link-profile);"
+                                    class="p-2 m-3 rounded text-center">Cerrar Sesión</div>
                             </a>
                         </li>
                     </ul>
@@ -78,24 +85,43 @@
                 <!-- Fila de búsqueda -->
                 <div class="row mb-4 align-items-center ">
                     <div class="col-auto">
-                        <button class="btn btn-toggle d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list text-white" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                        <button class="btn btn-toggle d-lg-none" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#sidebar" aria-controls="sidebar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-list text-white" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
                             </svg>
                         </button>
                     </div>
                     <div class="col ps-0">
-                        <input type="search" class="form-control rounded-pill bg-search text-white" placeholder="Buscar susurros...">
+                        <input type="search" class="form-control rounded-pill bg-search text-white"
+                            placeholder="Buscar susurros...">
                     </div>
                 </div>
 
-                <!-- Contenido principal -->
+                <!-- Contenido principal modificado -->
                 <div class="p-3 bg-content rounded">
-                    <textarea class="form-control text-white rounded mb-3 whisper-box" rows="3" placeholder="¿Qué susurro quieres hacer conocer? 👀"></textarea>
-                    <input type="text" class="form-control text-white rounded mb-3 tags-box" placeholder="Escribe tus etiquetas">
-                    <button class="btn btn-publish w-100">Publicar</button>
+                    <div class="mb-3">
+                        <label for="current-password" class="form-label text-white">Tu Contraseña actual</label>
+                        <input type="password" class="form-control text-white rounded password-box"
+                            id="current-password" placeholder="Falta la contraseña actual">
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-password" class="form-label text-white">Tu nueva contraseña</label>
+                        <input type="password" class="form-control text-white rounded password-box" id="new-password"
+                            placeholder="Falta la contraseña">
+                    </div>
+                    <div class="mb-3">
+                        <label for="repeat-new-password" class="form-label text-white">Repite tu nueva
+                            contraseña</label>
+                        <input type="password" class="form-control text-white rounded password-box"
+                            id="repeat-new-password" placeholder="Falta la contraseña">
+                    </div>
+                    <button class="btn btn-change-password w-100">Cambiar contraseña</button>
                     <!-- Mensaje de error para validación -->
-                    <div id="error-message" class="text-danger mt-2" style="display: none;">Por favor, completa todos los campos y asegúrate de que las etiquetas comiencen con # y tengan texto después del #.</div>
+                    <div id="error-message" class="text-danger mt-2" style="display: none;">Por favor, completa todos
+                        los campos y asegúrate de que las contraseñas coincidan.</div>
                 </div>
             </div>
 
@@ -104,18 +130,29 @@
                 <div class="p-3 bg-sidebar rounded mt-sm-4 mt-lg-0 h-100">
                     <h5 class="text-center mb-4">Etiquetas Populares ☝️🥸</h5>
                     <ul class="list-unstyled d-flex flex-wrap">
-                        <li><div class="bg-tags p-1 rounded m-1">#infidelidad</div></li>
-                        <li><div class="bg-tags p-1 rounded m-1">#besos</div></li>
-                        <li><div class="bg-tags p-1 rounded m-1">#inmoral</div></li>
-                        <li><div class="bg-tags p-1 rounded m-1">#secreto</div></li>
-                        <li><div class="bg-tags p-1 rounded m-1">#fiesta</div></li>
+                        <li>
+                            <div class="bg-tags p-1 rounded m-1">#infidelidad</div>
+                        </li>
+                        <li>
+                            <div class="bg-tags p-1 rounded m-1">#besos</div>
+                        </li>
+                        <li>
+                            <div class="bg-tags p-1 rounded m-1">#inmoral</div>
+                        </li>
+                        <li>
+                            <div class="bg-tags p-1 rounded m-1">#secreto</div>
+                        </li>
+                        <li>
+                            <div class="bg-tags p-1 rounded m-1">#fiesta</div>
+                        </li>
                     </ul>
                     <h5 class="text-center mb-4">Destacados 👀</h5>
                     <div style="background: var(--background-link-profile);" class="row  rounded p-3 m-1 mb-3">
                         <p class="small text-center">Hace 2 horas</p>
                         Increible descubren el rumor sobre [...]
                         <div class="row d-flex gap-2">
-                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">🔥3123</div>
+                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">
+                                🔥3123</div>
                             <div style="background: var(--green);" class="w-auto rounded-pill mt-2">🤑83%</div>
                         </div>
                     </div>
@@ -123,7 +160,8 @@
                         <p class="small text-center">Hace 6 horas</p>
                         El escándalo mas grande de la semana: La verdad sobre [...]
                         <div class="row d-flex gap-2">
-                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">🔥1223</div>
+                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">
+                                🔥1223</div>
                             <div style="background: var(--green);" class="w-auto rounded-pill mt-2">🤑94%</div>
                         </div>
                     </div>
@@ -132,7 +170,7 @@
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             fetch('server_info.php')
                 .then(response => response.json())
                 .then(data => {
@@ -142,37 +180,34 @@
                     console.error('Error:', error);
                 });
 
-            // Validación de campos vacíos y etiquetas
-            const publishButton = document.querySelector('.btn-publish');
-            const whisperBox = document.querySelector('.whisper-box');
-            const tagsBox = document.querySelector('.tags-box');
+            // Validación de campos vacíos y coincidencia de contraseñas
+            const changePasswordButton = document.querySelector('.btn-change-password');
+            const currentPassword = document.getElementById('current-password');
+            const newPassword = document.getElementById('new-password');
+            const repeatNewPassword = document.getElementById('repeat-new-password');
             const errorMessage = document.getElementById('error-message');
 
-            publishButton.addEventListener('click', function(event) {
-                const whisperText = whisperBox.value.trim();
-                const tagsText = tagsBox.value.trim();
+            changePasswordButton.addEventListener('click', function (event) {
+                const currentPasswordValue = currentPassword.value.trim();
+                const newPasswordValue = newPassword.value.trim();
+                const repeatNewPasswordValue = repeatNewPassword.value.trim();
 
                 // Validar que los campos no estén vacíos
-                if (whisperText === '' || tagsText === '') {
+                if (currentPasswordValue === '' || newPasswordValue === '' || repeatNewPasswordValue === '') {
                     errorMessage.textContent = 'Por favor, completa todos los campos.';
                     errorMessage.style.display = 'block';
                     event.preventDefault();
                     return;
                 }
 
-                // Validar que las etiquetas comiencen con # y tengan texto después del #
-                const tags = tagsText.split(' ');
-                const invalidTags = tags.some(tag => {
-                    return !tag.startsWith('#') || tag.length === 1 || tag.slice(1).trim() === '';
-                });
-
-                if (invalidTags) {
-                    errorMessage.textContent = 'Las etiquetas deben comenzar con # y tener texto después del #. Ejemplo: #FiestaLoca';
+                // Validar que las nuevas contraseñas coincidan
+                if (newPasswordValue !== repeatNewPasswordValue) {
+                    errorMessage.textContent = 'Las nuevas contraseñas no coinciden.';
                     errorMessage.style.display = 'block';
                     event.preventDefault();
                 } else {
                     errorMessage.style.display = 'none';
-                    alert('Publicación exitosa.');
+                    alert('Contraseña cambiada exitosamente.');
                 }
             });
         });
