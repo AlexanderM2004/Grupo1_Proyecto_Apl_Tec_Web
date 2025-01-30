@@ -8,12 +8,10 @@ services:
       dockerfile: Dockerfile
     container_name: secretosx_app
     restart: unless-stopped
+    working_dir: /var/www/api
     volumes:
-      - ./api:/var/www/api
+      - ./:/var/www
       - ./api/vendor:/var/www/api/vendor
-      - ./storage/logs:/var/www/api/storage/logs
-    environment:
-      PHP_INI_SCAN_DIR: "/usr/local/etc/php/conf.d:/usr/local/etc/php/custom.d"
     networks:
       - secretosx_network
 
@@ -36,6 +34,3 @@ services:
 networks:
   secretosx_network:
     driver: bridge
-
-volumes:
-  dbdata:

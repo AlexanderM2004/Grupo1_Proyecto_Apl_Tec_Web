@@ -1,6 +1,6 @@
 FROM php:8.1-fpm
 
-# Install system dependencies
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -11,32 +11,32 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libpq-dev
 
-# Clear cache
+# Limpiar caché
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
+# Instalar extensiones PHP
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
-# Install Composer
+# Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
+# Establecer directorio de trabajo
 WORKDIR /var/www/api
 
-# Create necessary directories
+# Crear directorios necesarios
 RUN mkdir -p /var/www/api/storage/logs \
     && mkdir -p /var/www/api/storage/framework/cache \
     && mkdir -p /var/www/api/storage/framework/sessions \
     && mkdir -p /var/www/api/storage/framework/views
 
-# Set environment variables for Composer
+# Variables de entorno para Composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_HOME /var/www/.composer
 
-# Copy composer files first
+# Copiar archivos composer
 COPY ./api/composer.* ./
 
-# Install dependencies
+# Instalar dependencias
 RUN composer install \
     --no-interaction \
     --no-plugins \
@@ -44,22 +44,26 @@ RUN composer install \
     --prefer-dist \
     --no-autoloader
 
-# Copy existing application directory
+# Copiar código de la aplicación
 COPY ./api .
 
-# Set permissions
+# Establecer permisos
 RUN chown -R www-data:www-data /var/www/api \
     && chmod -R 755 /var/www/api \
     && chmod -R 775 /var/www/api/storage
 
-# Generate autoloader
+# Generar autoloader optimizado
 RUN composer dump-autoload --optimize --classmap-authoritative
 
-# Configure error reporting
+# Configurar PHP
 RUN echo "error_reporting = E_ALL" > /usr/local/etc/php/conf.d/error-reporting.ini \
     && echo "display_errors = Off" >> /usr/local/etc/php/conf.d/error-reporting.ini \
     && echo "log_errors = On" >> /usr/local/etc/php/conf.d/error-reporting.ini \
-    && echo "error_log = /var/www/api/storage/logs/php-error.log" >> /usr/local/etc/php/conf.d/error-reporting.ini
+    && echo "error_log = /var/www/api/storage/logs/php-error.log" >> /usr/local/etc/php/conf.d/error-reporting.ini \
+    && echo "memory_limit = 256M" >> /usr/local/etc/php/conf.d/error-reporting.ini \
+    && echo "upload_max_filesize = 64M" >> /usr/local/etc/php/conf.d/error-reporting.ini \
+    && echo "post_max_size = 64M" >> /usr/local/etc/php/conf.d/error-reporting.ini \
+    && echo "max_execution_time = 180" >> /usr/local/etc/php/conf.d/error-reporting.ini
 
 EXPOSE 9000
 CMD ["php-fpm"]

@@ -1,0 +1,61 @@
+#cloud-config
+package_upgrade: true
+
+packages:
+  # Paquetes esenciales
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - software-properties-common
+  - gnupg
+  - git
+
+runcmd:
+  # Actualizar el sistema
+  - apt-get update
+  - apt-get upgrade -y
+
+  # Instalar Docker
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - apt-get update
+  - apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+  # Configurar Docker
+  - systemctl start docker
+  - systemctl enable docker
+
+  # Crear directorio y clonar repositorio
+  - mkdir -p /app
+  - git clone https://github.com/AlexanderM2004/Grupo1_Proyecto_Apl_Tec_Web.git /app
+
+  # Crear directorios necesarios para Docker
+  - mkdir -p /app/docker/nginx/conf.d
+  - mkdir -p /app/docker/nginx/logs
+  
+  # Crear .env en api/
+  - |
+    cat > /app/api/.env << 'EOF'
+    DB_HOST=asoproyecto.postgres.database.azure.com
+    DB_NAME=postgres
+    DB_USER=aso_g03
+    DB_PASS=ESPEg03.
+    DB_PORT=5432
+    JWT_SECRET=secreto_supersecreto_123
+    JWT_EXPIRATION=3600
+    RATE_LIMIT=100
+    RATE_LIMIT_TIME=3600
+    APP_ENV=production
+    APP_DEBUG=true
+    EOF
+
+  # Dar permisos
+  - chmod -R 755 /app
+  - chmod 640 /app/api/.env
+
+  # Iniciar Docker Compose
+  - cd /app
+  - docker compose up -d --build
+
+  # Guardar estado
+  - docker ps > /var/log/docker-status.log 2>&1
