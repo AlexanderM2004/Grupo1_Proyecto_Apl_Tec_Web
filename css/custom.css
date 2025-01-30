@@ -169,6 +169,11 @@ textarea.whisper-box:focus, input.tags-box:focus {
     color: white;
 }
 
+<<<<<<< HEAD
+.pointer{
+    cursor: pointer;
+}
+=======
 .bg-content {
     background-color: #2c2f33;
     border-radius: 10px;
@@ -217,3 +222,4 @@ textarea.whisper-box:focus, input.tags-box:focus {
     font-size: 14px;
     margin-top: 10px;
 }
+>>>>>>> dc7ac34ae49757a433eac1db6090663681b279fe

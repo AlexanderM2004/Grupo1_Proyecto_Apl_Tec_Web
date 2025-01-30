@@ -1,7 +1,5 @@
 $(document).ready(function () {
     $('.tarj').hide();
-    // $('.dest').hide();
-    // $('.dest').fadeIn(800);
     
     $('.conte, .dest').css({
         'opacity': '0',
@@ -32,5 +30,38 @@ $(document).ready(function () {
         let delay = 0 * index; // Retraso entre elementos
         $('.tarj').fadeIn(800);
         setTimeout(() => vibrar(this, 4, 1, 50), delay);
+    });
+
+    $('.reacc').on('click', function () {
+        var icono = $(this).find('.icono');
+        var div = $(this); 
+
+        div.stop().css({
+            transform: 'scale(1.1)', 
+            transition: 'transform 0.15s ease'
+        });
+
+        setTimeout(function () {
+            div.css({
+                transform: 'scale(1.05)'
+            });
+
+            setTimeout(function () {
+                div.css({
+                    transform: 'scale(1)' 
+                });
+
+                icono.stop().animate({
+                    fontSize: '22px',
+                    // left: '-3px'                    
+                }, 250).animate({
+                    fontSize: '19px',
+                    // left: '3px'
+                }, 250).animate({
+                    fontSize: '16px',
+                    // left: '-3px'
+                }, 250);
+            }, 100);
+        }, 150);
     });
 });
