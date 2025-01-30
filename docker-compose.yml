@@ -11,6 +11,9 @@ services:
     volumes:
       - ./api:/var/www/api
       - ./api/vendor:/var/www/api/vendor
+      - ./storage/logs:/var/www/api/storage/logs
+    environment:
+      PHP_INI_SCAN_DIR: "/usr/local/etc/php/conf.d:/usr/local/etc/php/custom.d"
     networks:
       - secretosx_network
 
@@ -23,12 +26,16 @@ services:
       - "80:80"
     volumes:
       - ./:/var/www
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
-    networks:
-      - secretosx_network
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./docker/nginx/logs:/var/log/nginx
     depends_on:
       - app
+    networks:
+      - secretosx_network
 
 networks:
   secretosx_network:
     driver: bridge
+
+volumes:
+  dbdata:

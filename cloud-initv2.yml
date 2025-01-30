@@ -25,6 +25,9 @@ packages:
   - php8.1-gd
   - php-pear
   - php8.1-dev
+  - php8.1-pdo
+  - php8.1-opcache
+  - php8.1-intl
   
   # Composer
   - composer
@@ -32,64 +35,81 @@ packages:
   # PostgreSQL client
   - postgresql-client
 
+  # Herramientas de debug
+  - htop
+  - net-tools
+
 write_files:
   - path: /etc/nginx/sites-available/default
     content: |
       server {
           listen 80;
-          index index.php index.html;
-          error_log  /var/log/nginx/error.log debug;
-          access_log /var/log/nginx/access.log;
+          server_name _;
           root /var/www;
 
-          # Frontend routes
+          index index.php index.html;
+          charset utf-8;
+
           location / {
-              try_files $uri $uri.html $uri/ /index.html;
-              index index.html;
+              try_files $uri $uri/ /index.html;
           }
 
-          # Remove .html extension
-          location ~ \.html$ {
-              try_files $uri =404;
-          }
-
-          # API routes
           location /api {
-              root /var/www;
               try_files $uri $uri/ /api/index.php$is_args$args;
 
               location ~ \.php$ {
-                  include snippets/fastcgi-php.conf;
+                  fastcgi_split_path_info ^(.+\.php)(/.+)$;
                   fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+                  fastcgi_index index.php;
+                  include fastcgi_params;
                   fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
                   fastcgi_param PATH_INFO $fastcgi_path_info;
+                  fastcgi_buffers 16 16k;
+                  fastcgi_buffer_size 32k;
+                  fastcgi_read_timeout 300;
               }
           }
 
-          # Prevent access to sensitive files
-          location ~ /\.env$ {
+          error_log  /var/log/nginx/error.log;
+          access_log /var/log/nginx/access.log;
+
+          location ~ /\.(?!well-known).* {
               deny all;
-              return 404;
-          }
-          
-          location ~ /composer\.(json|lock)$ {
-              deny all;
-              return 404;
           }
       }
+
+  - path: /etc/php/8.1/fpm/pool.d/www.conf
+    content: |
+      [www]
+      user = www-data
+      group = www-data
+      listen = /var/run/php/php8.1-fpm.sock
+      listen.owner = www-data
+      listen.group = www-data
+      pm = dynamic
+      pm.max_children = 5
+      pm.start_servers = 2
+      pm.min_spare_servers = 1
+      pm.max_spare_servers = 3
+      request_terminate_timeout = 300
+      catch_workers_output = yes
+      php_admin_value[error_log] = /var/log/php-fpm/www-error.log
+      php_admin_flag[log_errors] = on
 
 runcmd:
   # Actualizar el sistema
   - apt-get update
   - apt-get upgrade -y
   
-  # Agregar repositorio PHP 8.1 si es necesario
+  # Agregar repositorio PHP 8.1
   - add-apt-repository -y ppa:ondrej/php
   - apt-get update
 
   # Crear directorios necesarios
   - mkdir -p /var/www
-  - rm -rf /var/www/html # Eliminar directorio html por defecto
+  - rm -rf /var/www/html
+  - mkdir -p /var/log/php-fpm
+  - chown www-data:www-data /var/log/php-fpm
 
   # Clonar repositorio
   - git clone https://github.com/AlexanderM2004/Grupo1_Proyecto_Apl_Tec_Web.git /var/www/temp
@@ -105,25 +125,23 @@ runcmd:
   # Configurar .env
   - |
     cat > /var/www/api/.env << 'EOF'
-    DB_HOST=${DB_HOST}
-    DB_NAME=${DB_NAME}
-    DB_USER=${DB_USER}
-    DB_PASS=${DB_PASSWORD}
+    DB_HOST=asoproyecto.postgres.database.azure.com
+    DB_NAME=postgres
+    DB_USER=aso_g03
+    DB_PASS=ESPEg03.
     DB_PORT=5432
     JWT_SECRET=${JWT_SECRET}
     JWT_EXPIRATION=3600
     RATE_LIMIT=100
     RATE_LIMIT_TIME=3600
     APP_ENV=production
-    APP_DEBUG=false
+    APP_DEBUG=true
     EOF
-
-  # Instalar dependencias con Composer
-  - cd /var/www/api && composer install --no-interaction
 
   # Configurar PHP
   - |
-    cat >> /etc/php/8.1/fpm/php.ini << 'EOF'
+    cat > /etc/php/8.1/fpm/php.ini << 'EOF'
+    [PHP]
     error_reporting = E_ALL
     display_errors = Off
     log_errors = On
@@ -131,21 +149,33 @@ runcmd:
     memory_limit = 256M
     upload_max_filesize = 64M
     post_max_size = 64M
-    max_execution_time = 180
+    max_execution_time = 300
+    max_input_time = 300
+    default_socket_timeout = 300
     EOF
+
+  # Instalar dependencias con Composer
+  - cd /var/www/api && composer install --no-interaction
 
   # Establecer permisos
   - chown -R www-data:www-data /var/www
-  - chmod -R 755 /var/www
+  - find /var/www -type f -exec chmod 644 {} \;
+  - find /var/www -type d -exec chmod 755 {} \;
   - chmod -R 775 /var/www/api/storage
   - chmod 640 /var/www/api/.env
 
-  # Reiniciar servicios
-  - systemctl restart php8.1-fpm
-  - systemctl restart nginx
+  # Verificar y configurar PHP-FPM
+  - touch /var/run/php/php8.1-fpm.sock
+  - chmod 660 /var/run/php/php8.1-fpm.sock
+  - chown www-data:www-data /var/run/php/php8.1-fpm.sock
 
-  # Verificar servicios
-  - systemctl status nginx
-  - systemctl status php8.1-fpm
-  - php -v
-  - nginx -t
+  # Reiniciar servicios
+  - systemctl restart php8.1-fpm || echo "PHP-FPM restart failed" >> /var/log/cloud-init-errors.log
+  - systemctl restart nginx || echo "Nginx restart failed" >> /var/log/cloud-init-errors.log
+
+  # Verificaciones y logs
+  - systemctl status php8.1-fpm > /var/log/php-fpm-status.log
+  - ls -la /var/run/php/php8.1-fpm.sock > /var/log/sock-check.log
+  - ps aux | grep php > /var/log/php-processes.log
+  - nginx -t > /var/log/nginx-test.log
+  - php -v >> /var/log/php-version.log
