@@ -6,10 +6,14 @@ class LoggerService {
     private $logPath;
     
     private function __construct() {
-        $this->logPath = __DIR__ . '/../logs/';
-        
-        if (!file_exists($this->logPath)) {
-            mkdir($this->logPath, 0755, true);
+        // Asegurar que la ruta de logs esté en la raíz de /var/www/api/logs/
+        $this->logPath = realpath(__DIR__ . '/..') . '/logs/';
+
+        // Verificar si el directorio existe, si no, crearlo
+        if (!is_dir($this->logPath)) {
+            if (!mkdir($this->logPath, 0755, true) && !is_dir($this->logPath)) {
+                throw new \RuntimeException("No se pudo crear el directorio de logs: " . $this->logPath);
+            }
         }
     }
     
@@ -35,6 +39,13 @@ class LoggerService {
     private function log($level, $message, $context = []) {
         $date = new \DateTime();
         $logFile = $this->logPath . $date->format('Y-m-d') . '.log';
+
+        // Asegurar que el directorio existe antes de escribir en el log
+        if (!is_dir($this->logPath)) {
+            if (!mkdir($this->logPath, 0755, true) && !is_dir($this->logPath)) {
+                throw new \RuntimeException("No se pudo crear el directorio de logs: " . $this->logPath);
+            }
+        }
         
         $logEntry = sprintf(
             "[%s] %s: %s %s\n",
