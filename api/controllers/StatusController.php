@@ -39,6 +39,7 @@ class StatusController {
     }
 
     private function checkFileSystem(): bool {
+        
         $logPath = $this->logger->getLogPath();
         $testFile = $logPath . '/status_test.log';
 
