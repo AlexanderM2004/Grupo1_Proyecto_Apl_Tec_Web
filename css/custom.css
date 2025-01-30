@@ -172,3 +172,30 @@ textarea.whisper-box:focus, input.tags-box:focus {
 .pointer{
     cursor: pointer;
 }
+
+#loginForm input, #registerForm input {
+    color: white !important;
+}
+
+/* Estilos para inputs en modo oscuro */
+.bg-search input,
+.form-control.bg-search {
+    color: white !important;
+}
+
+.bg-search input::placeholder,
+.form-control.bg-search::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Estilos para inputs con error */
+.input-error {
+    border: 1px solid #ff4444 !important;
+}
+
+.error-message {
+    color: #ff4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: none;
+}
