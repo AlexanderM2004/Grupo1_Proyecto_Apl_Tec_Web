@@ -9,13 +9,9 @@
     <link rel="stylesheet" href="css/custom.css">
     <script src="js/bootstrap/bootstrap.bundle.min.js" defer></script>
     <script src="js/custom.js" defer></script>
-<<<<<<< HEAD
     <script src="js/jQueryV3.7.1.js"></script>
     <script src="js/animate.js"></script>
     <!-- <script src="js/auth.js" defer></script> -->
-=======
-    <script src="js/auth.js" defer></script>
->>>>>>> dc7ac34ae49757a433eac1db6090663681b279fe
     <link rel="icon" type="image/svg+xml" href="image/favicon.svg">
 </head>
 <body>
@@ -32,11 +28,11 @@
                     <div class="bg-tags p-2 m-2 rounded text-center">Inicio</div>
                     </a>
                 </li>
-                <li><a href="#" class="nav-link">
+                <li><a href="trend.html" class="nav-link">
                     <div class="bg-tags p-2 m-2 rounded text-center">Tendencias</div>                            
                     </a>
                 </li>
-                <li><a href="#" class="nav-link">
+                <li><a href="perfil.html" class="nav-link">
                     <div class="bg-tags p-2 m-2 rounded text-center">Mi Perfil</div>
                     </a>
                 </li>
@@ -61,11 +57,11 @@
                             <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Inicio</div>
                             </a>
                         </li>
-                        <li><a href="#" class="nav-link">
+                        <li><a href="trend.html" class="nav-link">
                             <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Tendencias</div>                            
                             </a>
                         </li>
-                        <li><a href="#" class="nav-link">
+                        <li><a href="perfil.html" class="nav-link">
                             <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Mi Perfil</div>
                             </a>
                         </li>
@@ -116,8 +112,12 @@
                         <div class="bg-tags p-1 rounded m-1 w-auto">#recuerdo</div>
                     </div>
                     <div class="row d-flex gap-2 mx-2">
-                        <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">🔥1233 les interesa</div>
-                        <div style="background: var(--orange);" class="w-auto rounded-pill mt-2">🤥344 dicen que es falso</div>
+                        <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2 reacc pointer d-flex align-items-center position-relative">
+                            <span class="icono position-absolute">🔥</span><span class="ms-4">1233 les interesa</span>
+                        </div>
+                        <div style="background: var(--orange);" class="w-auto rounded-pill mt-2 reacc pointer d-flex align-items-center position-relative">
+                            <span class="icono position-absolute">🤥</span><span class="ms-4">344 dicen que es falso</span>
+                        </div>
                         <div class="w-auto mt-2">📧 56</div>
                     </div>
                 </div>
@@ -134,41 +134,47 @@
                     <h3>Respuestas</h3>
                 </div>
 
-                <div class="p-3 bg-content rounded mb-3">
-                    <div class="mx-2 row">
-                        <div class="col-9">
-                            <div class="row gap-2">
-                                <div style="background: var(--purple);" class="w-auto rounded-pill">
-                                    <version="1.0" encoding="UTF-8"?><svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000">
-                                        <path d="M5 20V19C5 15.134 8.13401 12 12 12V12C15.866 12 19 15.134 19 19V20" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                                    Otro
+                <div>
+                    <div class="p-3 bg-content rounded mb-3 conte">
+                        <div class="mx-2 row">
+                            <div class="col-9">
+                                <div class="row gap-2">
+                                    <div style="background: var(--purple);" class="w-auto rounded-pill">
+                                        <version="1.0" encoding="UTF-8"?><svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000">
+                                            <path d="M5 20V19C5 15.134 8.13401 12 12 12V12C15.866 12 19 15.134 19 19V20" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                        Otro
+                                    </div>
+                                    <div class="w-auto rounded-pill small text-end">Hace 2 horas</div>
                                 </div>
-                                <div class="w-auto rounded-pill small text-end">Hace 2 horas</div>
+                            </div>
+                        </div>
+                        <p class="m-2">¡Yo tambien quiero verla nuevamente! XD</p>
+                        <div class="row d-flex gap-2 mx-2">
+                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2 reacc pointer d-flex align-items-center position-relative">
+                                <span class="icono position-absolute">🔥</span><span class="ms-4">123</span>
                             </div>
                         </div>
                     </div>
-                    <p class="m-2">¡Yo tambien quiero verla nuevamente! XD</p>
-                    <div class="row d-flex gap-2 mx-2">
-                        <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">🔥123</div>
-                    </div>
-                </div>
-
-                <div class="p-3 bg-content rounded">
-                    <div class="mx-2 row">
-                        <div class="col-9">
-                            <div class="row gap-2">
-                                <div style="background: var(--purple);" class="w-auto rounded-pill">
-                                    <version="1.0" encoding="UTF-8"?><svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000">
-                                        <path d="M5 20V19C5 15.134 8.13401 12 12 12V12C15.866 12 19 15.134 19 19V20" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                                    Otro
+    
+                    <div class="p-3 bg-content rounded conte">
+                        <div class="mx-2 row">
+                            <div class="col-9">
+                                <div class="row gap-2">
+                                    <div style="background: var(--purple);" class="w-auto rounded-pill">
+                                        <version="1.0" encoding="UTF-8"?><svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000">
+                                            <path d="M5 20V19C5 15.134 8.13401 12 12 12V12C15.866 12 19 15.134 19 19V20" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                        Otro
+                                    </div>
+                                    <div class="w-auto rounded-pill small text-end">Hace 45 minutos</div>
                                 </div>
-                                <div class="w-auto rounded-pill small text-end">Hace 45 minutos</div>
                             </div>
                         </div>
-                    </div>
-                    <p class="m-2">Esto me recuerda a 10 que pasó el mes pasado en el cumpleaños de Juan... 👀</p>
-                    <div class="row d-flex gap-2 mx-2">
-                        <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">🔥13</div>
+                        <p class="m-2">Esto me recuerda a 10 que pasó el mes pasado en el cumpleaños de Juan... 👀</p>
+                        <div class="row d-flex gap-2 mx-2">
+                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2 reacc pointer d-flex align-items-center position-relative">
+                                <span class="icono position-absolute">🔥</span><span class="ms-4">13</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -185,20 +191,28 @@
                         <li><div class="bg-tags p-1 rounded m-1 tarj">#fiesta</div></li>
                     </ul>
                     <h5 class="text-center mb-4">Destacados 👀</h5>
-                    <div style="background: var(--background-link-profile);" class="row  rounded p-3 m-1 mb-3">
+                    <div style="background: var(--background-link-profile);" class="row  rounded p-3 m-1 mb-3 dest">
                         <p class="small text-center">Hace 2 horas</p>
                         Increible descubren el rumor sobre [...]
                         <div class="row d-flex gap-2">
-                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">🔥3123</div>
-                            <div style="background: var(--green);" class="w-auto rounded-pill mt-2">🤑83%</div>
+                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2 reacc pointer d-flex align-items-center position-relative">
+                                <span class="icono position-absolute">🔥</span><span class="ms-4">3123</span>
+                            </div>     
+                            <div style="background: var(--green);" class="w-auto rounded-pill mt-2 reacc pointer d-flex align-items-center position-relative">
+                                <span class="icono position-absolute">🤑</span><span class="ms-4">83%</span>
+                            </div>
                         </div>
                     </div>
-                    <div style="background: var(--background-link-profile);" class="row rounded p-3 m-1 mb-3">
+                    <div style="background: var(--background-link-profile);" class="row rounded p-3 m-1 mb-3 dest">
                         <p class="small text-center">Hace 6 horas</p>
                         El escándalo mas grande de la semana: La verdad sobre [...]
                         <div class="row d-flex gap-2">
-                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">🔥1223</div>
-                            <div style="background: var(--green);" class="w-auto rounded-pill mt-2">🤑94%</div>
+                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2 reacc pointer d-flex align-items-center position-relative">
+                                <span class="icono position-absolute">🔥</span><span class="ms-4">3012</span>
+                            </div>     
+                            <div style="background: var(--green);" class="w-auto rounded-pill mt-2 reacc pointer d-flex align-items-center position-relative">
+                                <span class="icono position-absolute">🤑</span><span class="ms-4">76%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
