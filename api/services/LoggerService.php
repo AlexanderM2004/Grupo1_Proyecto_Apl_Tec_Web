@@ -6,7 +6,7 @@ class LoggerService {
     private $logPath;
     
     private function __construct() {
-        $this->logPath = __DIR__ . '/../storage/logs/';
+        $this->logPath = __DIR__ . '/../Logs/';
         
         if (!file_exists($this->logPath)) {
             mkdir($this->logPath, 0755, true);

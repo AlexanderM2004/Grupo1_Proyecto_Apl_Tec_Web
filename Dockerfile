@@ -1,71 +1,32 @@
+# Usar una imagen de PHP con extensiones necesarias
 FROM php:8.1-fpm
 
-# Instalar dependencias del sistema
+# Instalar dependencias necesarias
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
     unzip \
-    libpq-dev
+    curl \
+    git \
+    libzip-dev \
+    && docker-php-ext-install zip pdo pdo_mysql
 
-# Limpiar caché
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Instalar extensiones PHP
-RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
-
-# Instalar Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Instalar Composer dentro del contenedor
+RUN curl -sS https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/local/bin/composer
 
 # Establecer directorio de trabajo
 WORKDIR /var/www/api
 
-# Crear directorios necesarios con S mayúscula
-RUN mkdir -p /var/www/api/Storage/logs \
-    && mkdir -p /var/www/api/Config \
-    && mkdir -p /var/www/api/Controllers \
-    && mkdir -p /var/www/api/Models \
-    && mkdir -p /var/www/api/Services \
-    && mkdir -p /var/www/api/Routes \
-    && mkdir -p /var/www/api/Middleware \
-    && mkdir -p /var/www/api/Utils
+# Copiar archivos del proyecto al contenedor
+COPY . .
 
-# Variables de entorno para Composer
-ENV COMPOSER_ALLOW_SUPERUSER=1
+# Asegurar permisos correctos
+RUN chown -R www-data:www-data /var/www/api
 
-# Copiar archivos de configuración
-COPY ./api/composer.* ./
+# Ejecutar Composer install
+RUN composer install --no-dev --optimize-autoloader
 
-# Instalar dependencias
-RUN composer install \
-    --no-interaction \
-    --no-plugins \
-    --no-scripts \
-    --prefer-dist
-
-# Copiar código de la aplicación
-COPY ./api .
-
-# Establecer permisos
-RUN chown -R www-data:www-data /var/www/api \
-    && chmod -R 755 /var/www/api \
-    && chmod -R 775 /var/www/api/Storage
-
-# Generar autoloader optimizado
-RUN composer dump-autoload --optimize --classmap-authoritative
-
-# Configurar PHP
-RUN echo "error_reporting = E_ALL" > /usr/local/etc/php/conf.d/error-reporting.ini \
-    && echo "display_errors = Off" >> /usr/local/etc/php/conf.d/error-reporting.ini \
-    && echo "log_errors = On" >> /usr/local/etc/php/conf.d/error-reporting.ini \
-    && echo "error_log = /var/www/api/Storage/logs/php-error.log" >> /usr/local/etc/php/conf.d/error-reporting.ini \
-    && echo "memory_limit = 256M" >> /usr/local/etc/php/conf.d/error-reporting.ini \
-    && echo "upload_max_filesize = 64M" >> /usr/local/etc/php/conf.d/error-reporting.ini \
-    && echo "post_max_size = 64M" >> /usr/local/etc/php/conf.d/error-reporting.ini \
-    && echo "max_execution_time = 180" >> /usr/local/etc/php/conf.d/error-reporting.ini
-
+# Exponer el puerto para la app
 EXPOSE 9000
+
+# Comando por defecto
 CMD ["php-fpm"]

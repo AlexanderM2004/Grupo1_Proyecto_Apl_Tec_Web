@@ -9,6 +9,7 @@ packages:
   - software-properties-common
   - gnupg
   - git
+  - unzip
 
 runcmd:
   # Actualizar el sistema
@@ -25,19 +26,23 @@ runcmd:
   - systemctl start docker
   - systemctl enable docker
 
-  # Crear directorio y clonar repositorio
+  # Clonar el repositorio en /var/www
   - mkdir -p /var/www
   - git clone https://github.com/AlexanderM2004/Grupo1_Proyecto_Apl_Tec_Web.git /var/www
   - chmod -R 755 /var/www
 
-  # Crear directorios necesarios con S mayúscula
+  # Crear directorios necesarios con permisos adecuados
   - mkdir -p /var/www/api/Storage/logs
   - mkdir -p /var/www/docker/nginx/conf.d
   - mkdir -p /var/www/docker/nginx/logs
-  - chmod -R 775 /var/www/api/Storage
   - chown -R www-data:www-data /var/www/api/Storage
-  
-  # Crear .env en api/
+  - chmod -R 775 /var/www/api/Storage
+
+  # Instalar Composer globalmente en el sistema como root
+  - curl -sS https://getcomposer.org/installer | php
+  - mv composer.phar /usr/local/bin/composer
+
+  # Crear el archivo .env en api/
   - |
     cat > /var/www/api/.env << 'EOF'
     DB_HOST=asoproyecto.postgres.database.azure.com
@@ -53,17 +58,20 @@ runcmd:
     APP_DEBUG=true
     EOF
 
-  # Dar permisos
-  - chmod -R 755 /var/www
+  # Ajustar permisos del .env
   - chmod 640 /var/www/api/.env
-  - chown -R www-data:www-data /var/www/api/Storage
-  
-  # Asegurar que el usuario pueda ejecutar Docker
-  - usermod -aG docker azureuser
+  - chown www-data:www-data /var/www/api/.env
 
-  # Iniciar Docker Compose
+  # Asegurar que cualquier usuario con permisos administrativos pueda ejecutar Docker
+  - groupadd docker || true
+  - usermod -aG docker $(whoami)
+
+  # Iniciar Docker Compose y construir la imagen
   - cd /var/www
   - docker compose up -d --build
 
-  # Guardar estado
-  - docker ps > /var/log/docker-status.log 2>&1
+  # Ejecutar Composer dentro del contenedor como root
+  - docker compose exec -u root app composer install --no-dev --optimize-autoloader
+
+  # Reiniciar contenedores para aplicar cambios
+  - docker compose restart

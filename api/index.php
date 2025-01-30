@@ -2,7 +2,8 @@
 // Deshabilitar la salida del buffer
 ob_start();
 
-require 'vendor/autoload.php';
+// Require bootstrap
+require_once __DIR__ . '/bootstrap.php';
 
 use Dotenv\Dotenv;
 use App\Routes\Router;
