@@ -11,8 +11,11 @@ services:
     volumes:
       - ./:/var/www
       - ./api/vendor:/var/www/api/vendor
+      - ./api/.env:/var/www/api/.env  # Asegurar que el .env se monte correctamente
     networks:
       - secretosx_network
+    command: >
+      sh -c "composer install --no-dev --optimize-autoloader && php-fpm"
 
   # Nginx Service
   webserver:
