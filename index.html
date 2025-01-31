@@ -18,6 +18,8 @@
     <script src="js/userProfile.js"></script>
     <script src="js/tagsInput.js"></script>
     <script src="js/loader.js" defer></script>
+    <script src="js/whispers.js" defer></script>
+    <script src="js/whisperPublisher.js" defer></script>
     <link rel="icon" type="image/svg+xml" href="image/favicon.svg">
 </head>
 <body>
@@ -97,14 +99,32 @@
 
                 <!-- Contenido principal -->
                 <div class="p-3 bg-content rounded d-flex flex-column gap-3">
-                    <textarea class="form-control text-white rounded whisper-box" rows="3" placeholder="¿Qué susurro quieres hacer conocer? 👀"></textarea>
-                    <input type="text" class="form-control text-white rounded mb-3 tags-box" placeholder="Escribe tus etiquetas">
-                    <button class="btn btn-publish w-100">Publicar</button>
-                    <!-- Mensaje de error para validación -->
-                    <div id="error-message" class="text-danger mt-2" style="display: none;"></div>
+                    <form class="whisper-form">
+                        <textarea 
+                            class="form-control text-white rounded whisper-box" 
+                            rows="3" 
+                            placeholder="¿Qué susurro quieres hacer conocer? 👀"
+                            maxlength="500"
+                        ></textarea>
+                        <input 
+                            type="text" 
+                            class="form-control text-white rounded mb-3 tags-box" 
+                            placeholder="Escribe tus etiquetas"
+                        >
+                        <button type="submit" class="btn btn-publish w-100">Publicar</button>
+                        
+                        <!-- Contador de caracteres -->
+                        <div class="d-flex justify-content-between mt-2">
+                            <small class="text-light char-counter">0/500</small>
+                            <small class="text-light tags-counter">0 etiquetas</small>
+                        </div>
+                    </form>
                 </div>
                 <div class="row text-center text-white m-3">
                     <h3>Susurros recientes</h3>
+                </div>
+                <div id="recent-whispers" class="whispers-container">
+                    <!-- Los susurros se cargarán aquí -->
                 </div>
                 <div>
                     <a href="respuesta.html" class="link-a">
@@ -247,87 +267,138 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Validación de campos vacíos y etiquetas
-            const publishButton = document.querySelector('.btn-publish');
-            const whisperBox = document.querySelector('.whisper-box');
-            const tagsBox = document.querySelector('.tags-box');
-            const errorMessage = document.getElementById('error-message');
-
-            publishButton.addEventListener('click', function(event) {
-                event.preventDefault();
-                
-                // Obtener el texto del susurro
-                const whisperText = whisperBox.value.trim();
-                
-                // Obtener las etiquetas del nuevo sistema
-                const tagsInput = document.querySelector('.tags-box');
-                const tags = JSON.parse(tagsInput.value || '[]');
-
-                // Validar que el susurro no esté vacío
-                if (whisperText === '') {
-                    showError('Por favor, escribe tu susurro.');
-                    return;
-                }
-
-                // Validar que haya al menos una etiqueta
-                if (tags.length === 0) {
-                    showError('Añade al menos una etiqueta para tu susurro.');
-                    return;
-                }
-
-                // Validar el formato de las etiquetas
-                const invalidTags = tags.some(tag => {
-                    return !tag.startsWith('#') || tag.length <= 1 || /\s/.test(tag);
-                });
-
-                if (invalidTags) {
-                    showError('Las etiquetas deben comenzar con # y no pueden contener espacios.');
-                    return;
-                }
-
-                // Si todo está bien, proceder con la publicación
-                errorMessage.style.display = 'none';
-                
-                // Aquí iría el código para enviar los datos al servidor
-                const postData = {
-                    whisper: whisperText,
-                    tags: tags
-                };
-
-                // Debug: mostrar los datos que se enviarían
-                console.log('Datos a enviar:', postData);
-                
-                // Mostrar mensaje de éxito
-                alert('Publicación exitosa.');
-                
-                // Limpiar el formulario
-                whisperBox.value = '';
-                // Limpiar las etiquetas
-                const tagsContainer = document.querySelector('.tags-container');
-                while (tagsContainer.firstChild) {
-                    tagsContainer.removeChild(tagsContainer.firstChild);
-                }
-                tagsInput.value = '[]';
-                // Reinicializar el input de etiquetas
-                new TagsInput(tagsBox);
+            // Inicializar el renderer de susurros
+            const whisperRenderer = new WhisperRenderer({
+                container: document.querySelector('#recent-whispers'),
+                infiniteScroll: true,
+                showInterests: true,
+                showLies: true,
+                showResponses: true,
+                showViews: false,
+                showPercentage: true,
+                initialLoad: 20,
+                endpoint: '/api/whispers/recent'
             });
 
-            function showError(message) {
-                errorMessage.textContent = message;
-                errorMessage.style.display = 'block';
-                
-                // Animación suave del mensaje de error
-                errorMessage.style.opacity = '0';
-                errorMessage.style.transform = 'translateY(-10px)';
-                
-                // Forzar un reflow para que la animación funcione
-                errorMessage.offsetHeight;
-                
-                // Aplicar la transición
-                errorMessage.style.transition = 'all 0.3s ease-in-out';
-                errorMessage.style.opacity = '1';
-                errorMessage.style.transform = 'translateY(0)';
+            // Inicializar el publicador de susurros
+            const whisperPublisher = new WhisperPublisher({
+                form: document.querySelector('.whisper-form'),
+                messageInput: document.querySelector('.whisper-box'),
+                tagsInput: document.querySelector('.tags-box'),
+                publishButton: document.querySelector('.btn-publish'),
+                renderer: whisperRenderer
+            });
+
+            // Inicializar el sistema de etiquetas
+            const tagsBox = document.querySelector('.tags-box');
+            if (tagsBox && !tagsBox.dataset.initialized) {
+                new TagsInput(tagsBox);
             }
+
+            // Inicializar contadores
+            const whisperBox = document.querySelector('.whisper-box');
+            const charCounter = document.querySelector('.char-counter');
+            const tagsCounter = document.querySelector('.tags-counter');
+
+            // Contador de caracteres
+            if (whisperBox && charCounter) {
+                whisperBox.addEventListener('input', function() {
+                    const count = this.value.length;
+                    charCounter.textContent = `${count}/500`;
+                    charCounter.classList.toggle('text-warning', count >= 450);
+                });
+            }
+
+            // Contador de etiquetas
+            if (tagsCounter) {
+                const updateTagsCounter = () => {
+                    const tags = JSON.parse(document.querySelector('.tags-box').value || '[]');
+                    tagsCounter.textContent = `${tags.length} etiqueta${tags.length !== 1 ? 's' : ''}`;
+                };
+
+                // Observador para el contador de etiquetas
+                const tagsContainer = document.querySelector('.tags-container');
+                if (tagsContainer) {
+                    const observer = new MutationObserver(updateTagsCounter);
+                    observer.observe(tagsContainer, { 
+                        childList: true,
+                        subtree: true 
+                    });
+                }
+            }
+
+            // Inicializar búsqueda
+            const searchInput = document.querySelector('input[type="search"]');
+            if (searchInput) {
+                let searchTimeout;
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        const searchText = this.value.trim();
+                        if (searchText.length >= 3) {
+                            whisperRenderer.options.endpoint = `/api/whispers/search?q=${encodeURIComponent(searchText)}`;
+                            whisperRenderer.reloadWhispers();
+                        } else if (searchText.length === 0) {
+                            whisperRenderer.options.endpoint = '/api/whispers/recent';
+                            whisperRenderer.reloadWhispers();
+                        }
+                    }, 300);
+                });
+            }
+
+            // Cargar etiquetas populares
+            const fetchPopularTags = async () => {
+                try {
+                    const response = await fetch('/api/whispers/tags');
+                    if (response.ok) {
+                        const data = await response.json();
+                        const tagsContainer = document.querySelector('.list-unstyled.d-flex.flex-wrap');
+                        if (tagsContainer && data.tags) {
+                            tagsContainer.innerHTML = data.tags
+                                .map(tag => `<li><div class="bg-tags p-1 rounded m-1 tarj">${tag.nombre}</div></li>`)
+                                .join('');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error cargando etiquetas populares:', error);
+                }
+            };
+            
+            // Cargar susurros destacados
+            const fetchFeaturedWhispers = async () => {
+                try {
+                    const response = await fetch('/api/whispers/featured');
+                    if (response.ok) {
+                        const data = await response.json();
+                        const featuredContainer = document.querySelector('.dest').parentElement;
+                        if (featuredContainer && data.whispers) {
+                            featuredContainer.innerHTML = data.whispers
+                                .map(whisper => `
+                                    <div style="background: var(--background-link-profile);" class="row rounded p-3 m-1 mb-3 dest">
+                                        <p class="small text-center">${whisperRenderer.timeAgo(whisper.fecha_creacion)}</p>
+                                        ${whisperRenderer.escapeHtml(whisper.mensaje.substring(0, 50))}...
+                                        <div class="row d-flex gap-2">
+                                            <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2 reacc pointer">
+                                                🔥${whisper.me_interesa}
+                                            </div>     
+                                            <div style="background: var(--green);" class="w-auto rounded-pill mt-2 reacc pointer">
+                                                🤑${whisper.porcentaje_interes}%
+                                            </div>
+                                        </div>
+                                    </div>
+                                `)
+                                .join('');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error cargando susurros destacados:', error);
+                }
+            };
+
+            // Cargar datos iniciales
+            fetchPopularTags();
+            fetchFeaturedWhispers();
+            whisperRenderer.loadMore();
         });
     </script>
 </body>

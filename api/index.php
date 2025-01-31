@@ -14,6 +14,7 @@ use App\Middleware\RateLimitMiddleware;
 use App\Config\JWTConfig;
 use App\Services\LoggerService;
 use App\Controllers\ProfileController;
+use App\Controllers\WhisperController;
 
 // Configuración inicial
 error_reporting(E_ALL);
@@ -177,6 +178,12 @@ try {
     $router->post('/register', [AuthController::class, 'register']);
     $router->post('/login', [AuthController::class, 'login']);
     $router->post('/change-password', [ProfileController::class, 'changePassword']);
+    // Rutas para los susurros
+    $router->post('/whispers', [WhisperController::class, 'create']);
+    $router->get('/whispers/recent', [WhisperController::class, 'getRecent']);
+    $router->get('/whispers/trending', [WhisperController::class, 'getTrending']);
+    $router->get('/whispers/search', [WhisperController::class, 'search']);
+    $router->post('/whispers/reaction', [WhisperController::class, 'updateReaction']);
 
     // Log de inicio de solicitud
     $logger->info('Request started', [

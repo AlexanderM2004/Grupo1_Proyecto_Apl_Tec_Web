@@ -30,3 +30,29 @@
         transform: rotate(360deg);
     }
 }
+
+.loading-skeleton {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: var(--background-content);
+    border-radius: 0.5rem;
+    pointer-events: none;
+}
+
+.skeleton-line {
+    height: 1rem;
+    background: var(--background-link-profile);
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.skeleton-line:last-child {
+    width: 70%;
+}
+
+.scroll-sentinel {
+    height: 20px;
+    margin-bottom: 20px;
+}
