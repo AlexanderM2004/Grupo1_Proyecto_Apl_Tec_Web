@@ -40,6 +40,10 @@ class LoggerService {
     public function error($message, $context = []) {
         $this->log('ERROR', $message, $context);
     }
+
+    public function warning($message, $context = []) {
+        $this->log('WARNING', $message, $context);
+    }
     
     public function info($message, $context = []) {
         $this->log('INFO', $message, $context);

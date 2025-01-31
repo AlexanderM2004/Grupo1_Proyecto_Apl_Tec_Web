@@ -70,7 +70,7 @@ runcmd:
   - cd /var/www
   - docker compose build
   - docker compose up -d
-  - sleep 10  # Dar tiempo a que los contenedores estén listos
+  - sleep 10  # Dar tiempo a que los contenedores esten listos
   - docker compose exec -T app composer install --no-dev --optimize-autoloader
 
   # Reiniciar contenedores para aplicar cambios

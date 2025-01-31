@@ -212,7 +212,10 @@ $(document).ready(function() {
         if (!validateLoginForm()) {
             return;
         }
-
+    
+        // Mostrar loader
+        loaderManager.show();
+    
         $.ajax({
             url: `${API_URL}/login`,
             method: 'POST',
@@ -226,11 +229,15 @@ $(document).ready(function() {
                     setCookie('session_data', response.token, JWT_EXPIRATION);
                     window.location.href = '/';
                 } else {
-                    alert(response.message || 'Error en el inicio de sesión');
+                    alertManager.error(response.message || 'Error en el inicio de sesión');
                 }
             },
             error: function(xhr) {
-                alert(xhr.responseJSON?.message || 'Error en el servidor');
+                alertManager.error(xhr.responseJSON?.message || 'Error en el servidor');
+            },
+            complete: function() {
+                // Ocultar loader
+                loaderManager.hide();
             }
         });
     });
@@ -258,11 +265,15 @@ $(document).ready(function() {
                     setCookie('session_data', response.token, JWT_EXPIRATION);
                     window.location.href = '/';
                 } else {
-                    alert(response.message || 'Error en el registro');
+                    alertManager.error(response.message || 'Error en el registro');
                 }
             },
             error: function(xhr) {
-                alert(xhr.responseJSON?.message || 'Error en el servidor');
+                alertManager.error(xhr.responseJSON?.message || 'Error en el servidor');
+            },
+            complete: function() {
+                // Ocultar loader
+                loaderManager.hide();
             }
         });
     });

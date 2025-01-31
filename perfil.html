@@ -8,12 +8,17 @@
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/colors.css">
     <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/loader.css">
+    <link rel="stylesheet" href="css/alerts.css">
+    <script src="js/jQueryV3.7.1.js"></script>
+    <script src="js/alertManager.js" defer></script>
     <script src="js/bootstrap/bootstrap.bundle.min.js" defer></script>
     <script src="js/custom.js" defer></script>
-    <script src="js/jQueryV3.7.1.js"></script>
-    <script src="js/animate.js"></script>
+    <script src="js/profileManager.js" defer></script>
+    <script src="js/animate.js" defer></script>
     <script src="js/auth.js" defer></script>
     <script src="js/userProfile.js"></script>
+    <script src="js/loader.js" defer></script>
     <link rel="icon" type="image/svg+xml" href="image/favicon.svg">
 </head>
 
@@ -97,32 +102,44 @@
                     </div>
                     <div class="col ps-0">
                         <input type="search" class="form-control rounded-pill bg-search text-white"
-                            placeholder="Buscar susurros...">
+                            placeholder="Buscar susurros..." autocomplete="off">
                     </div>
                 </div>
 
                 <!-- Contenido principal modificado -->
                 <div class="p-3 bg-content rounded">
-                    <div class="mb-3">
-                        <label for="current-password" class="form-label text-white">Tu Contraseña actual</label>
-                        <input type="password" class="form-control text-white rounded tags-box"
-                            id="current-password" placeholder="Falta la contraseña actual">
-                    </div>
-                    <div class="mb-3">
-                        <label for="new-password" class="form-label text-white">Tu nueva contraseña</label>
-                        <input type="password" class="form-control text-white rounded tags-box" id="new-password"
-                            placeholder="Falta la contraseña">
-                    </div>
-                    <div class="mb-3">
-                        <label for="repeat-new-password" class="form-label text-white">Repite tu nueva
-                            contraseña</label>
-                        <input type="password" class="form-control text-white rounded tags-box"
-                            id="repeat-new-password" placeholder="Falta la contraseña">
-                    </div>
-                    <button class="btn btn-change-password w-100">Cambiar contraseña</button>
-                    <!-- Mensaje de error para validación -->
-                    <div id="error-message" class="text-danger mt-2" style="display: none;">Por favor, completa todos
-                        los campos y asegúrate de que las contraseñas coincidan.</div>
+                    <form id="changePasswordForm" autocomplete="off" novalidate>
+                        <div class="mb-3">
+                            <label for="current-password" class="form-label text-white">Tu Contraseña actual</label>
+                            <input type="password" 
+                                   class="form-control text-white rounded tags-box"
+                                   id="current-password" 
+                                   placeholder="Ingresa tu contraseña actual"
+                                   autocomplete="new-password"
+                                   required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="new-password" class="form-label text-white">Tu nueva contraseña</label>
+                            <input type="password" 
+                                   class="form-control text-white rounded tags-box" 
+                                   id="new-password"
+                                   placeholder="Ingresa tu nueva contraseña"
+                                   autocomplete="new-password"
+                                   required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="repeat-new-password" class="form-label text-white">Repite tu nueva contraseña</label>
+                            <input type="password" 
+                                   class="form-control text-white rounded tags-box"
+                                   id="repeat-new-password" 
+                                   placeholder="Confirma tu nueva contraseña"
+                                   autocomplete="new-password"
+                                   required>
+                        </div>
+                        <button type="submit" class="btn btn-change-password w-100">Cambiar contraseña</button>
+                        <!-- Mensaje de error para validación -->
+                        <div id="error-message" class="text-danger mt-2" style="display: none;"></div>
+                    </form>
                 </div>
             </div>
 
@@ -160,48 +177,5 @@
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            fetch('server_info.php')
-                .then(response => response.json())
-                .then(data => {
-                    alert('Servidor: ' + data.hostname + '\nIP: ' + data.ip);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
-            // Validación de campos vacíos y coincidencia de contraseñas
-            const changePasswordButton = document.querySelector('.btn-change-password');
-            const currentPassword = document.getElementById('current-password');
-            const newPassword = document.getElementById('new-password');
-            const repeatNewPassword = document.getElementById('repeat-new-password');
-            const errorMessage = document.getElementById('error-message');
-
-            changePasswordButton.addEventListener('click', function (event) {
-                const currentPasswordValue = currentPassword.value.trim();
-                const newPasswordValue = newPassword.value.trim();
-                const repeatNewPasswordValue = repeatNewPassword.value.trim();
-
-                // Validar que los campos no estén vacíos
-                if (currentPasswordValue === '' || newPasswordValue === '' || repeatNewPasswordValue === '') {
-                    errorMessage.textContent = 'Por favor, completa todos los campos.';
-                    errorMessage.style.display = 'block';
-                    event.preventDefault();
-                    return;
-                }
-
-                // Validar que las nuevas contraseñas coincidan
-                if (newPasswordValue !== repeatNewPasswordValue) {
-                    errorMessage.textContent = 'Las nuevas contraseñas no coinciden.';
-                    errorMessage.style.display = 'block';
-                    event.preventDefault();
-                } else {
-                    errorMessage.style.display = 'none';
-                    alert('Contraseña cambiada exitosamente.');
-                }
-            });
-        });
-    </script>
 </body>
 </html>
