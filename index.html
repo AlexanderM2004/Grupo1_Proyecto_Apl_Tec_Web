@@ -13,6 +13,7 @@
     <script src="js/animate.js"></script>
     <script src="js/auth.js" defer></script>
     <script src="js/userProfile.js"></script>
+    <script src="js/tagsInput.js"></script>
     <link rel="icon" type="image/svg+xml" href="image/favicon.svg">
 </head>
 <body>
@@ -91,8 +92,8 @@
                 </div>
 
                 <!-- Contenido principal -->
-                <div class="p-3 bg-content rounded">
-                    <textarea class="form-control text-white rounded mb-3 whisper-box" rows="3" placeholder="¿Qué susurro quieres hacer conocer? 👀"></textarea>
+                <div class="p-3 bg-content rounded d-flex flex-column gap-3">
+                    <textarea class="form-control text-white rounded whisper-box" rows="3" placeholder="¿Qué susurro quieres hacer conocer? 👀"></textarea>
                     <input type="text" class="form-control text-white rounded mb-3 tags-box" placeholder="Escribe tus etiquetas">
                     <button class="btn btn-publish w-100">Publicar</button>
                     <!-- Mensaje de error para validación -->
@@ -242,15 +243,6 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('server_info.php')
-                .then(response => response.json())
-                .then(data => {
-                    alert('Servidor: ' + data.hostname + '\nIP: ' + data.ip);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
             // Validación de campos vacíos y etiquetas
             const publishButton = document.querySelector('.btn-publish');
             const whisperBox = document.querySelector('.whisper-box');
@@ -258,32 +250,80 @@
             const errorMessage = document.getElementById('error-message');
 
             publishButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                
+                // Obtener el texto del susurro
                 const whisperText = whisperBox.value.trim();
-                const tagsText = tagsBox.value.trim();
+                
+                // Obtener las etiquetas del nuevo sistema
+                const tagsInput = document.querySelector('.tags-box');
+                const tags = JSON.parse(tagsInput.value || '[]');
 
-                // Validar que los campos no estén vacíos
-                if (whisperText === '' || tagsText === '') {
-                    errorMessage.textContent = 'Por favor, completa todos los campos.';
-                    errorMessage.style.display = 'block';
-                    event.preventDefault();
+                // Validar que el susurro no esté vacío
+                if (whisperText === '') {
+                    showError('Por favor, escribe tu susurro.');
                     return;
                 }
 
-                // Validar que las etiquetas comiencen con # y no tengan espacios
-                const tags = tagsText.split(' ');
+                // Validar que haya al menos una etiqueta
+                if (tags.length === 0) {
+                    showError('Añade al menos una etiqueta para tu susurro.');
+                    return;
+                }
+
+                // Validar el formato de las etiquetas
                 const invalidTags = tags.some(tag => {
-                    return !tag.startsWith('#') || tag.length === 1 || tag.includes(' ', 1);
+                    return !tag.startsWith('#') || tag.length <= 1 || /\s/.test(tag);
                 });
 
                 if (invalidTags) {
-                    errorMessage.textContent = 'Las etiquetas deben comenzar con # y tener texto después del #. Ejemplo: #FiestaLoca';
-                    errorMessage.style.display = 'block';
-                    event.preventDefault();
-                } else {
-                    errorMessage.style.display = 'none';
-                    alert('Publicación exitosa.');
+                    showError('Las etiquetas deben comenzar con # y no pueden contener espacios.');
+                    return;
                 }
+
+                // Si todo está bien, proceder con la publicación
+                errorMessage.style.display = 'none';
+                
+                // Aquí iría el código para enviar los datos al servidor
+                const postData = {
+                    whisper: whisperText,
+                    tags: tags
+                };
+
+                // Debug: mostrar los datos que se enviarían
+                console.log('Datos a enviar:', postData);
+                
+                // Mostrar mensaje de éxito
+                alert('Publicación exitosa.');
+                
+                // Limpiar el formulario
+                whisperBox.value = '';
+                // Limpiar las etiquetas
+                const tagsContainer = document.querySelector('.tags-container');
+                while (tagsContainer.firstChild) {
+                    tagsContainer.removeChild(tagsContainer.firstChild);
+                }
+                tagsInput.value = '[]';
+                // Reinicializar el input de etiquetas
+                new TagsInput(tagsBox);
             });
+
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                
+                // Animación suave del mensaje de error
+                errorMessage.style.opacity = '0';
+                errorMessage.style.transform = 'translateY(-10px)';
+                
+                // Forzar un reflow para que la animación funcione
+                errorMessage.offsetHeight;
+                
+                // Aplicar la transición
+                errorMessage.style.transition = 'all 0.3s ease-in-out';
+                errorMessage.style.opacity = '1';
+                errorMessage.style.transform = 'translateY(0)';
+            }
         });
     </script>
 </body>

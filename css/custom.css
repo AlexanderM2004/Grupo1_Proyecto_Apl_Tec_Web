@@ -290,3 +290,31 @@ textarea.whisper-box:focus, input.tags-box:focus {
     position: relative;
     min-height: 400px;
 }
+
+/* Estilos para el input de tags */
+.tags-container {
+    min-height: 38px;
+    border: none;
+}
+
+.tag-input {
+    flex: 0 1 auto;
+}
+
+.tag-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.remove-tag:hover {
+    color: #ff4444;
+}
+
+#error-message {
+    color: #ff4444;
+    font-size: 0.875rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border-radius: 0.25rem;
+    display: none;
+    background-color: rgba(255, 68, 68, 0.1);
+}
