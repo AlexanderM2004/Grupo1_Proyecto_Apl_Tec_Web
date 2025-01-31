@@ -11,6 +11,22 @@ class User {
         $this->db = Database::getInstance()->getConnection();
     }
 
+    public function findByUsername(string $username): ?array {
+        $query = "SELECT id, username, password, genero FROM usuarios WHERE username = :username";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(['username' => $username]);
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
+    public function findById(int $id): ?array {
+        $query = "SELECT id, username, genero FROM usuarios WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(['id' => $id]);
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
     public function create(array $userData): ?int {
         $query = "INSERT INTO usuarios (username, password, genero, pais) 
                  VALUES (:username, :password, :genero, :pais) 
@@ -27,18 +43,8 @@ class User {
         return $stmt->fetchColumn();
     }
 
-    public function findByUsername(string $username): ?array {
-        $query = "SELECT * FROM usuarios WHERE username = :username";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute(['username' => $username]);
-        
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
-    }
-
     public function updatePassword(int $userId, string $newPassword): bool {
-        $query = "UPDATE usuarios SET password = :password 
-                  WHERE id = :id";
-        
+        $query = "UPDATE usuarios SET password = :password WHERE id = :id";
         $stmt = $this->db->prepare($query);
         return $stmt->execute([
             'password' => password_hash($newPassword, PASSWORD_DEFAULT),

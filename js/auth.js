@@ -278,13 +278,16 @@ $(document).ready(function() {
     function checkAuth() {
         const token = getCookie('session_data');
         const currentPath = window.location.pathname;
+        const isLoginPage = currentPath.includes('/login');
         
-        if ((currentPath === '/login' || currentPath === '/login.html') && token) {
+        if (isLoginPage && token) {
+            // Si estamos en login y hay token, redirigir al inicio
             window.location.href = '/';
             return;
         }
         
-        if (currentPath !== '/login' && currentPath !== '/login.html' && !token) {
+        if (!isLoginPage && !token) {
+            // Si no estamos en login y no hay token, redirigir a login
             window.location.href = '/login';
             return;
         }

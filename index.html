@@ -12,17 +12,18 @@
     <script src="js/jQueryV3.7.1.js"></script>
     <script src="js/animate.js"></script>
     <script src="js/auth.js" defer></script>
+    <script src="js/userProfile.js"></script>
     <link rel="icon" type="image/svg+xml" href="image/favicon.svg">
 </head>
 <body>
     <!-- Offcanvas Sidebar -->
     <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
         <div class="offcanvas-header">
-            <h4 class="offcanvas-title mx-4" id="sidebarLabel">Hola, usuario</h4>
+            <h4 class="offcanvas-title mx-4 user-display-name" id="sidebarLabel">Hola, usuario</h4>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <p class="text-center">@usuario</p>
+            <p class="text-center user-display-handle">@usuario</p>
             <ul class="nav flex-column">
                 <li><a href="Index.html" class="nav-link">
                     <div class="bg-tags p-2 m-2 rounded text-center">Inicio</div>
@@ -50,8 +51,8 @@
             <!-- Columna izquierda -->
             <div class="col-lg-3 d-none d-lg-block">
                 <div class="p-3 bg-sidebar rounded h-100">
-                    <h5 class="text-center">Hola, usuario</h5>
-                    <p class="text-center">@usuario</p>
+                    <h5 class="text-center user-display-name">Hola, usuario</h5>
+                    <p class="text-center user-display-handle">@usuario</p>
                     <ul class="list-unstyled">
                         <li><a href="Index.html" class="nav-link">
                             <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Inicio</div>
@@ -65,7 +66,7 @@
                             <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Mi Perfil</div>
                             </a>
                         </li>
-                        <li><a href="login.html" class="nav-link">
+                        <li><a href="login.html" class="nav-link logout-link">
                             <div style="background: var(--background-link-profile);" class="p-2 m-3 rounded text-center">Cerrar Sesión</div>
                             </a>
                         </li>
