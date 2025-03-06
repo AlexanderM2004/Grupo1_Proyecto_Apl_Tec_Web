@@ -5,7 +5,7 @@
 Este proyecto puede ser desplegado automáticamente en Azure usando cloud-init. Sigue estos pasos:
 
 ### 1. Preparación
- 
+
 1. Crea un archivo `cloud-init.yml` con el siguiente contenido:
 
 ```yaml
