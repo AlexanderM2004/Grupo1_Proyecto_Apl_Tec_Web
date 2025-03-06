@@ -1,6 +1,5 @@
 # Grupo1
 
-
 ## Despliegue en Azure con Cloud-Init
 
 Este proyecto puede ser desplegado automáticamente en Azure usando cloud-init. Sigue estos pasos:
