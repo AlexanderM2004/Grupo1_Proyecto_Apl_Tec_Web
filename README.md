@@ -8,6 +8,7 @@ Este proyecto puede ser desplegado automáticamente en Azure usando cloud-init. 
 
 1. Crea un archivo `cloud-init.yml` con el siguiente contenido para la configuracion de las maquinas virtuales que conforman el balanceador de carga:
 
+
 ```yaml
 #cloud-config
 package_upgrade: true

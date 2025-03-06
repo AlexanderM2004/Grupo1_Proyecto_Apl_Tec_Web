@@ -38,6 +38,7 @@ class Database {
                 'user' => $_ENV['DB_USER']
             ]);
 
+            
             // Intentar conexión con opciones adicionales
             $options = [
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,

@@ -54,6 +54,7 @@ class User {
             'id' => $userId
         ]);
     }
+
     
     public function verifyPassword(int $userId, string $currentPassword): bool {
         $query = "SELECT password FROM usuarios WHERE id = :id";
