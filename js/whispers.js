@@ -141,7 +141,13 @@ class WhisperRenderer {
             'O': 'var(--purple)'
         };
 
-        const isHot = whisper.porcentaje_interes >= 70 && whisper.vistas >= 100;
+        const calculateInterestPercentage = (whisper) => {
+            if (!whisper.me_interesa || whisper.me_interesa === 0) return 0;
+            const ratio = (whisper.me_interesa / (whisper.me_interesa + whisper.es_mentira)) * 100;
+            return Math.round(ratio);
+        };
+
+        const isHot = calculateInterestPercentage(whisper) >= 70 && whisper.vistas >= 100;
 
         let html = `
             <div class="mx-2 row">
@@ -221,7 +227,7 @@ class WhisperRenderer {
         }
 
         if (this.options.showPercentage) {
-            html += `<div class="w-auto mt-2">📊 ${whisper.porcentaje_interes}%</div>`;
+            html += `<div class="w-auto mt-2">📊 ${calculateInterestPercentage(whisper)}%</div>`;
         }
 
         html += '</div>';
@@ -398,7 +404,11 @@ class WhisperRenderer {
             const featuredContainer = document.querySelector('#popular-whispers-loop');
             if (featuredContainer) {
                 featuredContainer.innerHTML = data.data.whispers
-                    .map(whisper => `
+                    .map(whisper => {
+                        const interesPercentage = whisper.me_interesa > 0 ?
+                            Math.round((whisper.me_interesa / (whisper.me_interesa + whisper.es_mentira)) * 100) : 0;
+
+                        return `
                         <div style="background: var(--background-link-profile);" class="row rounded p-3 m-1 mb-3 dest">
                             <p class="small text-center">${this.timeAgo(whisper.fecha_creacion)}</p>
                             ${this.escapeHtml(whisper.mensaje.substring(0, 50))}...
@@ -409,11 +419,11 @@ class WhisperRenderer {
                                 </div>
                                 <div style="background: var(--green);" class="w-auto rounded-pill mt-2 reacc pointer d-flex align-items-center position-relative">
                                     <span class="icono position-absolute">🤑</span>
-                                    <span class="ms-4">${whisper.porcentaje_interes}%</span>
+                                    <span class="ms-4">${interesPercentage}%</span>
                                 </div>
                             </div>
                         </div>
-                    `)
+                    `})
                     .join('');
             }
         } catch (error) {
@@ -447,6 +457,42 @@ class WhisperRenderer {
         } catch (error) {
             console.error('Error loading popular tags:', error);
             alertManager.error('Error al cargar las etiquetas populares');
+        }
+    }
+
+    // Add this new method to the WhisperRenderer class
+    async loadRecentWhispers() {
+        try {
+            const response = await fetch('/api/whispers/recent?limit=5');
+            const data = await response.json();
+
+            if (!data.data || !data.data.whispers) {
+                console.error('No recent whispers data found');
+                return;
+            }
+
+            const recentContainer = document.querySelector('#recent-whispers-loop');
+            if (recentContainer) {
+                recentContainer.innerHTML = data.data.whispers
+                    .map(whisper => `
+                        <div style="background: var(--background-link-profile);" class="row rounded p-3 m-1 mb-3 dest">
+                            <p class="small text-center">${this.timeAgo(whisper.fecha_creacion)}</p>
+                            ${this.escapeHtml(whisper.mensaje.substring(0, 50))}...
+                            <div class="row d-flex gap-2">
+                                <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2">
+                                    🔥 ${whisper.me_interesa}
+                                </div>
+                                <div class="w-auto mt-2">
+                                    📧 ${whisper.respuestas_count}
+                                </div>
+                            </div>
+                        </div>
+                    `)
+                    .join('');
+            }
+        } catch (error) {
+            console.error('Error loading recent whispers:', error);
+            alertManager.error('Error al cargar los susurros recientes');
         }
     }
 }
