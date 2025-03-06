@@ -3,6 +3,7 @@
 **/storage/logs/*
 docker/nginx/logs/*
 
+
 # Pero mantener los directorios
 !**/logs/.gitkeep
 !**/storage/logs/.gitkeep
