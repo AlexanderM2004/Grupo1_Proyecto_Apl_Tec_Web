@@ -148,9 +148,7 @@ Antes del despliegue, asegúrate de:
 
 3. Verificar que tu servidor de base de datos permite conexiones desde la IP de la VM de Azure
 
-
 ### 5. Mantenimiento
-
 
 Para reiniciar los servicios:
 ```bash
