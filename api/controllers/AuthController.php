@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Services\AuthService;
 use App\Services\LoggerService;
 use App\Utils\Validator;
+use App\Utils\Clean;
 
 class AuthController {
     private $userModel;
@@ -30,7 +31,7 @@ class AuthController {
                 ];
             }
 
-            if ($this->userModel->findByUsername($data['username'])) {
+            if ($this->userModel->findByUsername(Clean::cleanInput($data['username']))) {
                 return [
                     'status' => 'error',
                     'message' => 'El usuario ya existe'

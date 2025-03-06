@@ -180,8 +180,10 @@ try {
     $router->post('/change-password', [ProfileController::class, 'changePassword']);
     // Rutas para los susurros
     $router->post('/whispers', [WhisperController::class, 'create']);
+    $router->get('/whispers/tags', [WhisperController::class, 'getTags']);
     $router->get('/whispers/recent', [WhisperController::class, 'getRecent']);
-    $router->get('/whispers/trending', [WhisperController::class, 'getTrending']);
+    $router->get('/whispers/popular', [WhisperController::class, 'getPopular']);
+    $router->get('/whispers/featured', [WhisperController::class, 'getTrending']);
     $router->get('/whispers/search', [WhisperController::class, 'search']);
     $router->post('/whispers/reaction', [WhisperController::class, 'updateReaction']);
 

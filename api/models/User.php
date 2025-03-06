@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Config\Database;
+use App\Utils\Clean;
 use PDO;
 
 class User {
@@ -12,9 +13,11 @@ class User {
     }
 
     public function findByUsername(string $username): ?array {
+        $userClean = Clean::cleanInput($username);
+
         $query = "SELECT id, username, password, genero FROM usuarios WHERE username = :username";
         $stmt = $this->db->prepare($query);
-        $stmt->execute(['username' => $username]);
+        $stmt->execute(['username' => $userClean]);
         
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
@@ -34,10 +37,10 @@ class User {
         
         $stmt = $this->db->prepare($query);
         $stmt->execute([
-            'username' => $userData['username'],
-            'password' => password_hash($userData['password'], PASSWORD_DEFAULT),
-            'genero' => $userData['genero'],
-            'pais' => $userData['pais']
+            'username' => Clean::cleanInput($userData['username']),
+            'password' => password_hash(Clean::cleanInput($userData['password']), PASSWORD_DEFAULT),
+            'genero' => Clean::cleanInput($userData['genero']),
+            'pais' => Clean::cleanInput($userData['pais'])
         ]);
         
         return $stmt->fetchColumn();
@@ -47,7 +50,7 @@ class User {
         $query = "UPDATE usuarios SET password = :password WHERE id = :id";
         $stmt = $this->db->prepare($query);
         return $stmt->execute([
-            'password' => password_hash($newPassword, PASSWORD_DEFAULT),
+            'password' => password_hash(Clean::cleanInput($newPassword), PASSWORD_DEFAULT),
             'id' => $userId
         ]);
     }
@@ -58,8 +61,7 @@ class User {
         $stmt->execute(['id' => $userId]);
         
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$user) return false;
         
-        return password_verify($currentPassword, $user['password']);
+        return password_verify(Clean::cleanInput($currentPassword), $user['password']);
     }
 }

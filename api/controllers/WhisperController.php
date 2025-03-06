@@ -88,6 +88,26 @@ class WhisperController {
         }
     }
 
+    public function getTags() {
+        try {
+            $tags = $this->whisperModel->getAllTags();
+            return [
+                'status' => 'success',
+                'data' => [
+                    'tags' => $tags
+                ]
+            ];
+        } catch (\Exception $e) {
+            $this->logger->error('Error al obtener etiquetas', [
+                'error' => $e->getMessage()
+            ]);
+            return [
+                'status' => 'error',
+                'message' => 'Error al obtener las etiquetas'
+            ];
+        }
+    }
+
     public function getRecent() {
         try {
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -128,7 +148,7 @@ class WhisperController {
             $hours = isset($_GET['hours']) ? (int)$_GET['hours'] : 2;
             $offset = ($page - 1) * $limit;
 
-            $whispers = $this->whisperModel->getTrending($hours, $limit, $offset);
+            $whispers = $this->whisperModel->getFeatured($hours, $limit, $offset);
 
             return [
                 'status' => 'success',
@@ -153,9 +173,40 @@ class WhisperController {
         }
     }
 
+    public function getPopular() {
+        try {
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 20;
+            $offset = ($page - 1) * $limit;
+
+            $whispers = $this->whisperModel->getPopular($limit, $offset);
+
+            return [
+                'status' => 'success',
+                'data' => [
+                    'whispers' => $whispers,
+                    'pagination' => [
+                        'current_page' => $page,
+                        'limit' => $limit
+                    ]
+                ]
+            ];
+
+        } catch (\Exception $e) {
+            $this->logger->error('Error al obtener populares', [
+                'error' => $e->getMessage()
+            ]);
+
+            return [
+                'status' => 'error',
+                'message' => 'Error al obtener los populares'
+            ];
+        }
+    }
+
     public function search() {
         try {
-            $searchText = $_GET['q'] ?? '';
+            $searchText = isset($_GET['q']) ? urldecode($_GET['q']) : '';
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
             $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 20;
             $offset = ($page - 1) * $limit;
@@ -167,6 +218,8 @@ class WhisperController {
                 ];
             }
 
+            // Sanitize search text
+            $searchText = trim($searchText);
             $whispers = $this->whisperModel->getByText($searchText, $limit, $offset);
             $totalPages = $this->whisperModel->getTotalPages($limit, null, $searchText);
 

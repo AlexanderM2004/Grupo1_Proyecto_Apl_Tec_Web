@@ -110,7 +110,7 @@ class WhisperRenderer {
             // Aplicar estilo inicial para la animación
             whisperElement.style.opacity = '0';
             whisperElement.style.transform = 'translateY(20px)';
-            
+
             // Insertar al final del contenedor
             this.container.appendChild(whisperElement);
 
@@ -134,15 +134,15 @@ class WhisperRenderer {
     createWhisperElement(whisper) {
         const element = document.createElement('div');
         element.className = 'p-3 bg-content rounded mb-3 conte';
-    
+
         const genderBackgroundColor = {
             'M': 'var(--comment-gener-male)',
             'F': 'var(--pink)',
             'O': 'var(--purple)'
         };
-    
+
         const isHot = whisper.porcentaje_interes >= 70 && whisper.vistas >= 100;
-    
+
         let html = `
             <div class="mx-2 row">
                 <div class="col-8">
@@ -175,7 +175,7 @@ class WhisperRenderer {
             } else if (Array.isArray(whisper.etiquetas)) {
                 tags = whisper.etiquetas;
             }
-        
+
             if (tags.length > 0) {
                 html += '<div class="row d-flex mx-2">';
                 tags.forEach(tag => {
@@ -193,7 +193,7 @@ class WhisperRenderer {
 
         // Agregar sección de estadísticas según las opciones
         html += '<div class="row d-flex gap-2 mx-2">';
-        
+
         if (this.options.showInterests) {
             html += `
                 <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2 reacc pointer d-flex align-items-center position-relative">
@@ -245,7 +245,7 @@ class WhisperRenderer {
     setupReactionListeners(element, whisperId) {
         const meInteresa = element.querySelector('.reacc:first-child');
         const esMentira = element.querySelector('.reacc:nth-child(2)');
-    
+
         if (meInteresa) {
             meInteresa.addEventListener('click', () => {
                 this.animateReaction(meInteresa);
@@ -270,7 +270,7 @@ class WhisperRenderer {
                 },
                 body: JSON.stringify({ whisper_id: whisperId, type: type })
             });
-    
+
             if (!response.ok) {
                 // Si hay error, revertir el incremento
                 const countElement = element.querySelector('.ms-4');
@@ -296,7 +296,7 @@ class WhisperRenderer {
         const date = new Date(timestamp);
         const now = new Date();
         const seconds = Math.floor((now - date) / 1000);
-        
+
         const intervals = {
             año: 31536000,
             mes: 2592000,
@@ -328,7 +328,7 @@ class WhisperRenderer {
     animateReaction(element) {
         const iconElement = element.querySelector('.icono');
         const countElement = element.querySelector('.ms-4');
-        
+
         // Animar el contenedor
         element.style.transform = 'scale(1.1)';
         setTimeout(() => {
@@ -337,7 +337,7 @@ class WhisperRenderer {
                 element.style.transform = 'scale(1)';
             }, 100);
         }, 150);
-    
+
         // Animar el ícono
         if (iconElement) {
             let currentSize = 16;
@@ -359,7 +359,7 @@ class WhisperRenderer {
             };
             animate();
         }
-    
+
         // Incrementar y animar el contador
         if (countElement) {
             const currentValue = parseInt(countElement.textContent);
@@ -375,7 +375,7 @@ class WhisperRenderer {
         // Reiniciar el estado
         this.page = 1;
         this.hasMoreContent = true;
-        
+
         // Limpiar contenido actual
         while (this.container.firstChild) {
             this.container.removeChild(this.container.firstChild);
@@ -384,5 +384,69 @@ class WhisperRenderer {
         // Recargar susurros
         await this.loadMore();
     }
-}
 
+    async loadFeaturedWhispers() {
+        try {
+            const response = await fetch('/api/whispers/popular');
+            const data = await response.json();
+
+            if (!data.data || !data.data.whispers) {
+                console.error('No featured whispers data found');
+                return;
+            }
+
+            const featuredContainer = document.querySelector('#popular-whispers-loop');
+            if (featuredContainer) {
+                featuredContainer.innerHTML = data.data.whispers
+                    .map(whisper => `
+                        <div style="background: var(--background-link-profile);" class="row rounded p-3 m-1 mb-3 dest">
+                            <p class="small text-center">${this.timeAgo(whisper.fecha_creacion)}</p>
+                            ${this.escapeHtml(whisper.mensaje.substring(0, 50))}...
+                            <div class="row d-flex gap-2">
+                                <div style="background: var(--comment-btn-fire-back);" class="w-auto rounded-pill mt-2 reacc pointer d-flex align-items-center position-relative">
+                                    <span class="icono position-absolute">🔥</span>
+                                    <span class="ms-4">${whisper.me_interesa}</span>
+                                </div>
+                                <div style="background: var(--green);" class="w-auto rounded-pill mt-2 reacc pointer d-flex align-items-center position-relative">
+                                    <span class="icono position-absolute">🤑</span>
+                                    <span class="ms-4">${whisper.porcentaje_interes}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    `)
+                    .join('');
+            }
+        } catch (error) {
+            console.error('Error loading featured whispers:', error);
+            alertManager.error('Error al cargar los susurros destacados');
+        }
+    }
+
+    async loadPopularTags() {
+        try {
+            const response = await fetch('/api/whispers/tags');
+            const data = await response.json();
+
+            if (!data.data || !data.data.tags) {
+                console.error('No tags data found');
+                return;
+            }
+
+            const tagsContainer = document.querySelector('#tags-loop');
+            if (tagsContainer) {
+                tagsContainer.innerHTML = data.data.tags
+                    .map(tag => `
+                        <li>
+                            <div class="bg-tags p-1 rounded m-1 tarj">
+                                ${tag.nombre}
+                                <small>(${tag.uso_count})</small>
+                            </div>
+                        </li>`)
+                    .join('');
+            }
+        } catch (error) {
+            console.error('Error loading popular tags:', error);
+            alertManager.error('Error al cargar las etiquetas populares');
+        }
+    }
+}
