@@ -8,7 +8,6 @@ docker/nginx/logs/*
 !**/storage/logs/.gitkeep
 !docker/nginx/logs/.gitkeep
 
-
 # Ignorar archivos de log específicos
 *.log
 *.error
