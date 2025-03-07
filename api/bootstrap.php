@@ -2,6 +2,7 @@
 
 // Utils
 require_once __DIR__ . '/utils/Validator.php';
+require_once __DIR__ . '/utils/Clean.php';
 
 // Models
 require_once __DIR__ . '/models/User.php';
