@@ -6,6 +6,7 @@ require_once __DIR__ . '/utils/Clean.php';
 
 // Models
 require_once __DIR__ . '/models/User.php';
+require_once __DIR__ . '/models/Whisper.php';
 
 // Config
 require_once __DIR__ . '/config/JWTConfig.php';
